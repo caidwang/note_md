@@ -327,11 +327,123 @@ Java中的参数传递仅有值传递形式, 而不具有C++中的引用传递�
 
 继承后可以对父类的方法进行覆盖, 覆盖要求两者方法的签名完全一样, 此时依然可以通过`super.method`调用父类的方法.
 
-**多态**: 超类变量可以引用超类, 也可以引用超类的子类, 它们对于超类变量来说是等价的, 但是在真正调用对象的方法时, 会根据对象的实际类型, 调用该类的方法(即可能是覆盖了超类的方法), 这种调用同一个方法根据对象类型决定实际使用方法的设计称为*多态*.
+`super`除了在父类方法调用中会被使用, 还会在构造器中通过`super(parms)`调用父类的构造器, 和this一样要求在第一行.
+
+在实现继承时, 覆盖方法时, 签名必须完全相同, 但是返回类型可以是原方法返回类的子类.
+
+**多态**: 超类变量可以引用超类, 也可以引用超类的子类, 它们对于超类变量来说是等价的, 但是在真正调用对象的方法时, 会根据对象的实际类型, 调用该类的方法(即可能是覆盖了超类的方法), 类型变量可以指向多种子类对象的现象称为*多态*. 
+
+**方法调用的过程**
+- 确定类名和方法名
+- 列出当前类和父类的所有方法
+- 在当前类和父类方法中, 如果可以找到多个或找不到都会报错
+
+**阻止继承**: 声明了`final`的类不能够被继承, 声明了`final`的方法在被继承时不可以被覆盖, 子类依然可以调用被`final`修饰的方法.
+
+**强制转换**: 强制转换的前提是可以转换, 例如当对象本来是`class1`, 处理过程中将其转化成`Object`, 可以通过`(class1)`对其进行强制类型转换. 不能够将`Object`对象直接转化为子类对象.这一问题在数组操作中存在, 下面举一例.
+
+```java
+Employee[] es = new Manager[5];
+es[0] = new Employee(); // 会报错, 数组需要记录自己的实际类型. 这样的操作缺少了Manager的实例域.
+```
+
+**抽象类**: 方法可以在访问表示符后通过申明`abstract`变为一个抽象方法, 含有一个以上抽象方法的类, 称为抽象类, 类也可以直接声明为抽象类, 抽象方法不需要实现, 抽象类不能够实例化, 但是可以声明这个类型的变量. 抽象类是代码抽象的重要机制, 子类中的公共方法应当在抽象类中实现, 抽象类不应该实现方法的思想是错误的.
+
 ### Object及其方法
+
+Object类是所有类的父类, 该类具有大量的方法能够供类使用, 其中有几种方法在实现时可能需要重载, 需要被重点记录.
+
+`equals`方法: 该方法在重载中存在以下的问题: 对于有些情况, 我们希望父类和子类, 子类和子类在相互比较时, 如果父类域相等, 就认为它们是相等的; 但是另一些情况, 我们希望父类和子类即使父类域都相等也不能够认为它们相等. 因此, `equals`的编写方法就比较有讲究.
+
+- 检测是否是同一对象
+- 第一步判断null
+- 第二步, 判断类, 判断类时, 如果时前一种情况, 可以使用`isinstance`关键字进行判断; 如果是第二种情况, 应该用`.class`属性和`getClass()`判断.
+- 如果前面的都相同, 对各个实例域使用`equals`进行判断.
+
+`hashCode`方法用于对该类实例进行hash时调用, 如果重写了`equals`就必须重写该方法, 保证`equals`相等的两个对象具有相同的`hashcode`.
+
+`toString`方法, 在调用print时会调用该对象的`toString`方法.
 
 ### ArrayList
 
+**访问列表元素:** 使用`at`方法访问元素
+
+**构建列表:** 新的列表都应该使用泛型类型, 而不应该使用Object类型的.
+
+### 参数可变的方法
+
+使用`Class...`作为方法的参数时, 能够接受变数量的参数, 其实相当于接受了一个`Class[]`的数组. 例如`main`可以写成`public static void main(String... args)`.
+
 ### 枚举类
 
+在之前就看过, 枚举类型可以写成以下形式:
+```java
+public enum Size {SMALL, MEDIUM, LARGE, EXTRA_LARGE}; // 注意最后这个;
+```
+这样就可以定义一个`Size`类, 该类只具有4个实例, 新定义该类的变量时, 直接引用该类的对象, 而不能新建对象(事实上, `enum`类的构造器是`private`的).
+
+所有的enum和class是相似的, 事实上`enum`类型的类都继承于`Enum`类, 该类定义了几个实用方法, 同时可以在上文的基础上对类进行修改.
+
+`toString`方法: 该方法对`enum`对象转化为`String`对象, 默认是原对象名
+
+`Enum.ValueOf(Class, String)`静态方法: 该方法是`toString`的逆方法, 返回对应的对象.
+
+`values()`方法: 返回所有枚举对象.
+
+可以对构造器进行重载, 也可以增加方法. 能够重载的方法只有`toString`方法.
+
+```java
+public enum Size {
+  SMALL("small"), MEDIUM("medium"), LARGE("large"), EXTRA_LARGE("extra_large"); //注意这个分号不能少
+  private String describe; 
+  private Size(String s) {
+    describe = s;
+  }
+  public String getDescribe() {
+    return describe;
+  }
+}
+```
+
 ### 反射
+
+反射是java运行时分析的重要手段, 能够获得对象的类信息(包括类型, 方法, 域, 域值等).
+
+#### Class类
+
+每个类本身是一个Class类, 该类维护了类的类名, 访问控制符, 域, 方法等实例域. 获得`Class`的方法有三种
+- 对类直接取属性`Employee.class`
+- 对对象获得其类型 `employee.getClass()`
+- `Class.forName(String)` 在所有存储的类中查找类, 不论该类是否被该程序使用.
+
+一个`Class`对象具有`getName`获得类名, `getModifiers`获得访问标识符, `getComponentType`获得元素类型(针对Array, 放在Class中有些奇怪)等方法.
+
+`Class`对象具有的域都是`Field`类的实例, 可以通过`getField(String name)`--获得该名称的域, `getDeclaredFields()`--获得所有声明的域, `getFields()`--获得所有public的域
+
+`Class`对象具有的方法都是`Method`类的实例, 和`Field`类似具有几个get方法, 但是需要注意, 因为同名的方法可能不止一个, 因此需要使用方法的签名作为参数, `getMethod(String name, Class<?>... Parameters)`.
+
+>`forName`方法可能会引起已检查异常, 需要和`try`语句一起使用.
+#### Field类
+
+`Field`类的实例首先有名字, 可以通过`getName()`获得, 类可以通过`getType()`获得, 返回的是一个`Class`类对象,  重要的是, 现在得到的仅是类的一个域, 要获得这个域的值可以通过一系列get方法
+
+- `get(Object obj) -> Object` 传入的是Class的实例,这个实例具有这个Field, 可以通过get得到
+- `getInt(Object obj) -> int`
+- `getDouble(Object obj) -> double`
+- `getGenericType(Object obj) -> Type` 获得Field对应类型的对象.
+
+但是直接获得, 只能够访问该类public的域, 为了访问到私有域需要首先设置`Accessible`. Field自己就具有`setAccessible(boolean)`, 其实也可以采用`AccessibleObject.setAccessible(Field[] array, boolean flag)`的方法批量的设置.
+
+#### Method类
+
+`Method`类中, 很多方法和之前大同小异, 而最关心的问题是,java中方法是否能够像c++中的函数指针一样被调用, `Method`中具有`invoke(Obj param1, Obj param2)`方法, 将参数传入可以得到返回Object的调用结果. 但是这种方式的运行速度较慢,并不主张使用.
+
+### 继承的设计技巧
+
+- 将公共的方法和域放在超类
+- 不要使用受保护的域
+- 使用继承实现`is-a`关系
+- 除非所有方法都有意义否则不应使用继承
+- 覆盖方法时不应改变其行为预期
+- 占位
+- 不要过多使用反射

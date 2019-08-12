@@ -1,18 +1,19 @@
-- [数组与矩阵](#数组与矩阵)
+- [数组与矩阵](#%e6%95%b0%e7%bb%84%e4%b8%8e%e7%9f%a9%e9%98%b5)
   - [283. Move Zeroes](#283-move-zeroes)
-  - [k-Sum类题目 [双指针, Hash, 排序]](#k-sum类题目-双指针-hash-排序)
+  - [k-Sum类题目 [双指针, Hash, 排序]](#k-sum%e7%b1%bb%e9%a2%98%e7%9b%ae-%e5%8f%8c%e6%8c%87%e9%92%88-hash-%e6%8e%92%e5%ba%8f)
     - [2Sum](#2sum)
     - [3Sum & 4Sum](#3sum--4sum)
-  - [119. Pascal's Triangle II [原地迭代]](#119-pascals-triangle-ii-原地迭代)
-- [字符串](#字符串)
-- [栈与队列](#栈与队列)
-- [哈希表](#哈希表)
+  - [119. Pascal's Triangle II [原地迭代]](#119-pascals-triangle-ii-%e5%8e%9f%e5%9c%b0%e8%bf%ad%e4%bb%a3)
+  - [844. Backspace String Compare[双指针代替栈]](#844-backspace-string-compare%e5%8f%8c%e6%8c%87%e9%92%88%e4%bb%a3%e6%9b%bf%e6%a0%88)
+- [字符串](#%e5%ad%97%e7%ac%a6%e4%b8%b2)
+- [栈与队列](#%e6%a0%88%e4%b8%8e%e9%98%9f%e5%88%97)
+- [哈希表](#%e5%93%88%e5%b8%8c%e8%a1%a8)
   - [1002 Find Common Character](#1002-find-common-character)
   - [888. Fair Candy Swap](#888-fair-candy-swap)
-- [排序](#排序)
-- [图](#图)
-- [动态规划](#动态规划)
-- [分治](#分治)
+- [排序](#%e6%8e%92%e5%ba%8f)
+- [图](#%e5%9b%be)
+- [动态规划](#%e5%8a%a8%e6%80%81%e8%a7%84%e5%88%92)
+- [分治](#%e5%88%86%e6%b2%bb)
   - [Majority Element](#majority-element)
 
 # 数组与矩阵
@@ -72,7 +73,45 @@ class Solution {
 }
 ```
 
+## 844. Backspace String Compare[双指针代替栈]
 
+用指针模拟栈移动, 从序列的尾端往前遍历遇到出栈条件时, 进行记录, 在向前移时消费出栈记录, 当两个栈都没有出栈记录可以消费时, 必须进行比较.
+
+```java
+class Solution {
+    public boolean backspaceCompare(String S, String T) {
+        int cnt1 = 0, cnt2 = 0;
+        int ptr1 = S.length() - 1, ptr2 = T.length() - 1;
+        while (ptr1 >= 0 && ptr2 >= 0) {
+            ptr1 = getCurrentPtr(S, ptr1);
+            ptr2 = getCurrentPtr(T, ptr2);
+            if (ptr1 >= 0 && ptr2 >= 0) {
+                if (S.charAt(ptr1)  != T.charAt(ptr2)) return false;
+                ptr1--;
+                ptr2--;
+            }
+        }
+        return (getCurrentPtr(S, ptr1) == getCurrentPtr(T, ptr2));
+    }
+    
+    // 栈指针模拟, 反向遍历
+    private int getCurrentPtr(String S, int ptr) {
+        if (ptr < 0) return ptr;
+        int cnt = 0;
+        while (cnt > 0 || S.charAt(ptr) == '#') {
+                if (S.charAt(ptr) == '#')  {
+                    cnt++;
+                    ptr--;
+                }
+                else {
+                    ptr--; cnt--;
+                }
+                if (ptr < 0) break;
+        }
+        return ptr;
+    }
+}
+```
 
 
 # 字符串
