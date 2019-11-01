@@ -1,3 +1,4 @@
+- [Java 技巧](#java-%e6%8a%80%e5%b7%a7)
 - [数组与矩阵](#%e6%95%b0%e7%bb%84%e4%b8%8e%e7%9f%a9%e9%98%b5)
   - [283. Move Zeroes](#283-move-zeroes)
   - [k-Sum类题目 [双指针, Hash, 排序]](#k-sum%e7%b1%bb%e9%a2%98%e7%9b%ae-%e5%8f%8c%e6%8c%87%e9%92%88-hash-%e6%8e%92%e5%ba%8f)
@@ -5,6 +6,12 @@
     - [3Sum & 4Sum](#3sum--4sum)
   - [119. Pascal's Triangle II [原地迭代]](#119-pascals-triangle-ii-%e5%8e%9f%e5%9c%b0%e8%bf%ad%e4%bb%a3)
   - [844. Backspace String Compare[双指针代替栈]](#844-backspace-string-compare%e5%8f%8c%e6%8c%87%e9%92%88%e4%bb%a3%e6%9b%bf%e6%a0%88)
+  - [回文串类型](#%e5%9b%9e%e6%96%87%e4%b8%b2%e7%b1%bb%e5%9e%8b)
+    - [234. Palindrome Linked List](#234-palindrome-linked-list)
+    - [125. Valid Palindrome](#125-valid-palindrome)
+    - [9. Palindrome Number](#9-palindrome-number)
+  - [k-diff类型](#k-diff%e7%b1%bb%e5%9e%8b)
+    - [532. K-diff Pairs in an Array[双指针]](#532-k-diff-pairs-in-an-array%e5%8f%8c%e6%8c%87%e9%92%88)
 - [字符串](#%e5%ad%97%e7%ac%a6%e4%b8%b2)
 - [栈与队列](#%e6%a0%88%e4%b8%8e%e9%98%9f%e5%88%97)
 - [哈希表](#%e5%93%88%e5%b8%8c%e8%a1%a8)
@@ -15,6 +22,23 @@
 - [动态规划](#%e5%8a%a8%e6%80%81%e8%a7%84%e5%88%92)
 - [分治](#%e5%88%86%e6%b2%bb)
   - [Majority Element](#majority-element)
+
+# Java 技巧
+
+- ArrayList<Integer> 和 int[] 的转换
+  ```
+  int [] ints = list.stream().mapToInt(Integer::intValue).toArray();
+  ```
+  并不常用, 如果ArrayList的长度事前有办法确定, 尽量不用这样的转换而直接初始化primitive type的数组, stream方法的速度很慢.
+
+- Primitive Type Array 排序
+  直接用`Arrays.sort`可以排, 但是逆序的没有办法排, 可以先正序排然后swap成逆序.
+
+- 偶数判断, 偶数判断中, 效率最高的是比较二进制最后一位. 位与的优先级低于`==`因此写法如下
+  ```java
+  if((x & 1) == 0) // then do something
+  ``` 
+- 
 
 # 数组与矩阵
 
@@ -113,7 +137,125 @@ class Solution {
 }
 ```
 
+## 回文串类型
+### 234. Palindrome Linked List
+链表回文串的通用思路:
 
+对前半段进行翻转然后进行比较, 关键在于翻转操作, 翻转操作有以下要点:
+- 处理好0和1的情况
+- 处理好长度奇偶的情况
+- 翻转一个节点需要3个指针, 分别指向翻转点前一个和后一个
+- 最后来处理头结点的问题
+
+```java
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next ==null) return true;
+        int len = 0;
+        ListNode ptr = head;
+        while (ptr != null) {
+            len ++;
+            ptr = ptr.next;
+        }
+        ptr = head;
+        ListNode root = ptr.next;
+        ListNode temp = root.next;
+
+        for (int i = 0; i < len / 2 - 1; i++)  {
+            root.next = ptr;
+            ptr = root;
+            root = temp;
+            temp = temp.next;
+        }
+        head.next = null;
+        if (len % 2 == 1) root = temp;
+        while (root != null && ptr != null) {
+            if (root.val != ptr.val) return false;
+            root = root.next; 
+            ptr = ptr.next;
+        }
+        return true;
+    }
+}
+```
+### 125. Valid Palindrome 
+字符串回文串的基本思路:
+
+双指针比较两头的字符.
+- 处理0的情况
+- 转换成char的数组
+- 双指针遍历
+
+```java
+class Solution {
+    public boolean isPalindrome(String s) {
+        if (s.length() == 0) return true;
+        int i = 0, j = s.length() - 1;
+        char[] a = s.toCharArray();
+        while (i < j) {
+            while(!isChar(a[i]) && i < j) i++;
+            while(!isChar(a[j]) && i < j) j--;
+            if (Character.toLowerCase(a[i]) != Character.toLowerCase(a[j])) return false;
+            i ++;
+            j--;
+        }
+        return true;
+    }
+    private static boolean isChar(char x) {
+        return (x >= 'a' && x <= 'z') || (x >= 'A' && x <= 'Z') || (x >= '0' && x <= '9');
+    }
+}
+```
+
+### 9. Palindrome Number
+数字回文串的基本思路:
+
+对前半段数字进行翻转, 构建新的数字进行比较. 注意事项如下:
+- 结尾为0的数字不会是回文串, 但是0除外
+- 考虑负号时, 负数不会是回文串
+- 翻转整段数字可能导致超过最大整型数
+  
+```java
+class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0 || (x %10 == 0 && x != 0)) return false;
+        int revert = 0;
+        while (x > revert) {
+            revert  = revert * 10 + x % 10;
+            x /= 10;
+        }
+        return (x == revert) || (x == revert / 10);
+    }
+}
+```
+## k-diff类型
+k-diff类型给定一个数组判断数组中两个元素之差小于等于k或只等于k的数量.
+
+### 532. K-diff Pairs in an Array[双指针]
+
+这道题的关键是想到排序才能解决.
+```java
+class Solution {
+    public int findPairs(int[] nums, int k) {
+        if (nums.length < 2 && k < 0) return 0;
+        Arrays.sort(nums);
+        int i = 0, j = 1, ret = 0;
+        while (i < nums.length && j < nums.length) {
+            if (nums[j] - nums[i] < k) j++;
+            else if (nums[j] - nums[i] > k) i++;
+            else  {
+                if (i != j) {
+                ret += 1;
+                i++;
+                while (i < nums.length && nums[i] == nums[i-1]) i++;
+                }
+                else j++;
+            }
+        }
+        return ret;
+    }    
+}
+```
 # 字符串
 
 # 栈与队列

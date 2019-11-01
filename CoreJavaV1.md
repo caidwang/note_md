@@ -1,35 +1,49 @@
 # Java核心技术1
 
-- [Java核心技术1](#java核心技术1)
-  - [基础程序设计结构](#基础程序设计结构)
-    - [基础数据类型](#基础数据类型)
-    - [变量](#变量)
+- [Java核心技术1](#java%e6%a0%b8%e5%bf%83%e6%8a%80%e6%9c%af1)
+  - [基础程序设计结构](#%e5%9f%ba%e7%a1%80%e7%a8%8b%e5%ba%8f%e8%ae%be%e8%ae%a1%e7%bb%93%e6%9e%84)
+    - [基础数据类型](#%e5%9f%ba%e7%a1%80%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b)
+    - [变量](#%e5%8f%98%e9%87%8f)
       - [Tips](#tips)
-    - [运算符](#运算符)
+    - [运算符](#%e8%bf%90%e7%ae%97%e7%ac%a6)
       - [Tips](#tips-1)
-    - [字符串](#字符串)
+    - [字符串](#%e5%ad%97%e7%ac%a6%e4%b8%b2)
       - [Tips](#tips-2)
-    - [输入输出](#输入输出)
-      - [终端的输入输出](#终端的输入输出)
-      - [文件的输入输出](#文件的输入输出)
-    - [大数值](#大数值)
-    - [数组](#数组)
-  - [对象与类](#对象与类)
-    - [使用预定义类](#使用预定义类)
-    - [用户自定义类](#用户自定义类)
-    - [静态域和静态方法](#静态域和静态方法)
-    - [方法参数](#方法参数)
-    - [对象构造](#对象构造)
-    - [包](#包)
-    - [类路径](#类路径)
-    - [文档注释](#文档注释)
-    - [类设计技巧](#类设计技巧)
-  - [继承](#继承)
-    - [类,超类和子类](#类超类和子类)
-    - [Object及其方法](#object及其方法)
+    - [输入输出](#%e8%be%93%e5%85%a5%e8%be%93%e5%87%ba)
+      - [终端的输入输出](#%e7%bb%88%e7%ab%af%e7%9a%84%e8%be%93%e5%85%a5%e8%be%93%e5%87%ba)
+      - [文件的输入输出](#%e6%96%87%e4%bb%b6%e7%9a%84%e8%be%93%e5%85%a5%e8%be%93%e5%87%ba)
+    - [大数值](#%e5%a4%a7%e6%95%b0%e5%80%bc)
+    - [数组](#%e6%95%b0%e7%bb%84)
+  - [对象与类](#%e5%af%b9%e8%b1%a1%e4%b8%8e%e7%b1%bb)
+    - [使用预定义类](#%e4%bd%bf%e7%94%a8%e9%a2%84%e5%ae%9a%e4%b9%89%e7%b1%bb)
+    - [用户自定义类](#%e7%94%a8%e6%88%b7%e8%87%aa%e5%ae%9a%e4%b9%89%e7%b1%bb)
+    - [静态域和静态方法](#%e9%9d%99%e6%80%81%e5%9f%9f%e5%92%8c%e9%9d%99%e6%80%81%e6%96%b9%e6%b3%95)
+    - [方法参数](#%e6%96%b9%e6%b3%95%e5%8f%82%e6%95%b0)
+    - [对象构造](#%e5%af%b9%e8%b1%a1%e6%9e%84%e9%80%a0)
+    - [包](#%e5%8c%85)
+    - [类路径](#%e7%b1%bb%e8%b7%af%e5%be%84)
+    - [文档注释](#%e6%96%87%e6%a1%a3%e6%b3%a8%e9%87%8a)
+    - [类设计技巧](#%e7%b1%bb%e8%ae%be%e8%ae%a1%e6%8a%80%e5%b7%a7)
+  - [继承](#%e7%bb%a7%e6%89%bf)
+    - [类,超类和子类](#%e7%b1%bb%e8%b6%85%e7%b1%bb%e5%92%8c%e5%ad%90%e7%b1%bb)
+    - [受保护的访问](#%e5%8f%97%e4%bf%9d%e6%8a%a4%e7%9a%84%e8%ae%bf%e9%97%ae)
+    - [Object及其方法](#object%e5%8f%8a%e5%85%b6%e6%96%b9%e6%b3%95)
     - [ArrayList](#arraylist)
-    - [枚举类](#枚举类)
-    - [反射](#反射)
+    - [参数可变的方法](#%e5%8f%82%e6%95%b0%e5%8f%af%e5%8f%98%e7%9a%84%e6%96%b9%e6%b3%95)
+    - [枚举类](#%e6%9e%9a%e4%b8%be%e7%b1%bb)
+    - [反射](#%e5%8f%8d%e5%b0%84)
+      - [Class类](#class%e7%b1%bb)
+      - [Field类](#field%e7%b1%bb)
+      - [Method类](#method%e7%b1%bb)
+    - [继承的设计技巧](#%e7%bb%a7%e6%89%bf%e7%9a%84%e8%ae%be%e8%ae%a1%e6%8a%80%e5%b7%a7)
+  - [接口, lambda表达式和内部类](#%e6%8e%a5%e5%8f%a3-lambda%e8%a1%a8%e8%be%be%e5%bc%8f%e5%92%8c%e5%86%85%e9%83%a8%e7%b1%bb)
+    - [接口](#%e6%8e%a5%e5%8f%a3)
+    - [lambda表达式](#lambda%e8%a1%a8%e8%be%be%e5%bc%8f)
+    - [内部类](#%e5%86%85%e9%83%a8%e7%b1%bb)
+      - [局部内部类](#%e5%b1%80%e9%83%a8%e5%86%85%e9%83%a8%e7%b1%bb)
+      - [匿名内部类](#%e5%8c%bf%e5%90%8d%e5%86%85%e9%83%a8%e7%b1%bb)
+      - [静态内部类](#%e9%9d%99%e6%80%81%e5%86%85%e9%83%a8%e7%b1%bb)
+    - [代理](#%e4%bb%a3%e7%90%86)
 
 ## 基础程序设计结构
 
@@ -161,7 +175,7 @@ Console对象处理时, 每次只能读入一行, 不能进行更加方便的读
 
 ### 大数值
 
-为了解决上下溢出的问题, Java提供了java.math中 `BigInteger`和`BigDecimal`类, 前者可实现任意精度的整数运算, 后者可以实现任意精度的浮点数运算, 由于Java不能够对操作符进行重载, 这两类有自己的运算符,加(.add), 减(.subtract),乘(.multiply), 除(.divide), 取余(.mod). 可以使用`.valueOf(int/double)`将普通数值转换为大数.
+为了解决上下溢出的问题, Java提供了java.math中 `BigInteger`和`BigDecimal`类, 前者可实现任意精度的整数运算, 后者可以实现任意精度的浮点数运算, 由于Java不能够对操作符进行重载, 这两类有自己的运算符,加(.add), 减(.subtract),乘(.multiply), 除(.divide), 取余(.mod). 可以使用`.valueOf(int/double)`将普通数值转换为大数. 
 
 ### 数组
 
@@ -372,6 +386,93 @@ es[0] = new Employee(); // 会报错, 数组会记录自己的实际类型, 并�
 
 访问控制符声明为`protect`的成员可以被同一包或者子类访问, 默认访问控制符的成员可以被同一个包访问.
 
+更详细的说, protected的规则如下:
+- 包内可见,并对子类可见.
+- 若子类和父类不在同一个包, 子类中子类实例可以访问从父类继承来的protected方法, 而不能访问父类实例的protected方法
+
+> 引申: 若和父类不在同一个包中, 子类不能访问其他子类的父类protected方法. 也就是p227说的, 子类只能调用受保护的clone方法来克隆自己的对象的由来. 
+
+举例:
+```java
+//Duck1.java
+package playground;
+
+public class Duck1 {
+    public static void main(String[] args) {
+        Duck1 d = new Duck1();
+        d.testSelfClone();
+        d.testOtherSubclassClone();
+        d.testOtherSubclassWithPublicClone();
+    }
+    public void testSelfClone() {
+        clone(); // 可以, 从父类继承来的
+    }
+    public void testOtherSubclassClone() {
+        Duck2  d2 = new Duck2();
+        d2.clone(); // 是要报错的, 不能在子类中调用其他子类的父类protected方法.
+    }
+    public void testOtherSubclassWithPublicClone() {
+        Duck3 d3 = new Duck3();
+        d3.clone(); // 可以, 该类开放了public
+    }
+}
+
+//Duck2.java
+package playground;
+
+public class Duck2 { }
+
+//Duck3.java
+package playground;
+
+public class Duck3 {
+    public Duck3 clone() throws CloneNotSupportedException {
+        return (Duck3) super.clone();
+    }
+}
+```
+
+但是如果子类和父类在同一个包中, 事情又不一样了. 因为在同一个包中, 父类的protected方法是可见的.因此, 子类可以访问别的子类的父类protected方法.
+```java
+//Bird.java
+package playground;
+
+public class Bird {
+    protected void pFunc() {
+        System.out.println("IN Bird.pFunc.");
+    }
+}
+//Duck1.java
+package playground;
+
+public class Duck1 extends Bird{
+    public static void main(String[] args) {
+        Duck1 d = new Duck1();
+        d.testSelfpFunc();
+        d.testOtherSubclasspFunc();
+        d.testOtherSubclassWithPublicpFunc();
+    }
+    public void testSelfpFunc() {
+        pFunc(); // 可以, 从父类继承来的
+    }
+    public void testOtherSubclasspFunc() {
+        Duck2  d2 = new Duck2();
+        d2.pFunc(); // 可以, 因为在同一个包
+    }
+    public void testOtherSubclassWithPublicpFunc() {
+        Duck3 d3 = new Duck3();
+        d3.pFunc();
+    }
+}
+
+//Duck2.java
+package playground;
+public class Duck2 extends Bird{ }
+//Duck3.java
+package playground;
+public class Duck3 extends Bird { }
+```
+
 
 ### Object及其方法
 
@@ -493,3 +594,151 @@ public enum Size {
 - 覆盖方法时不应改变其行为预期
 - 占位
 - 不要过多使用反射
+
+## 接口, lambda表达式和内部类
+
+---
+
+### 接口
+
+**概念:** 不是类, 而是对一种需求的描述, 提供了一种标准,供服务端和客户端进行协调.
+
+**特性:**
+
+- 所有方法都是`public`, 所有域都是`public static final`
+- 不能有实例域
+- 不能使用`new`创建对象
+- 可以创建变量, 引用实现了接口的类的对象
+- 可以使用`instanceof` 关键字判断一个对象是否实现了接口
+
+Java8之后可以在接口中添加**静态方法**, 代替原本需要工具类来完成的工作, 静态方法在接口中起到实用工具的作用.
+
+**默认方法**: 对方法申明`default`可以将方法声明为默认方法, 默认方法使得实现该接口的类只需要实现自己需要重写的方法, 而不用重写所有方法. 例如`Collection`接口中的`isEmpty()`方法就可以用默认方法实现.
+
+默认方法产生冲突的情况:
+- 继承的超类和实现的接口有相同签名的方法
+- 实现的多个接口中有相同签名的默认方法
+
+解决方法:
+- 超类优先
+- 多个接口的相同签名默认方法冲突时, 由实现类实现该方法来决定使用哪个默认方法. 多个接口的相同签名方法有至少一个声明成了默认方法, 就需要解决这种一致性的冲突.
+
+
+**接口与抽象类对比:** 
+
+- 抽象类可以实现普通方法, 抽象类可以有实例域, 接口不可以
+- 抽象类是类, 接口不是
+- 抽象类只能单继承, 接口可以实现多个, 达到多继承的目标
+- 抽象类和接口都可以被其他抽象类/接口继承
+- 抽象类和接口都可以用`instanceof`判断
+
+接口能够避免多继承的复杂情况, 同时基本实现多继承的功能
+
+
+### lambda表达式
+
+lambda表达式的作用, 传递代码块, 一次或多次使用.
+
+**语法:** lambda表达式的基本形式为`(Class param)->{sentence;}`, 需要注意的语法点包括:
+- 不需要显式指定返回类型, 可以推导
+- 当参数类型可以推导时, 也可以不指定参数类型, 例如`Comparator<String> com = (first, second)-> first.length() - second.length();`
+- 当只有一句语句时, 花括号可以不用, 也不用加分号
+- 小括号必须有, 即使没有参数时也需要有个空括号
+- 返回类型可以为void, 在语句中没有返回值
+
+**函数式接口**: 只有一个抽象方法的接口称为函数式接口, 例如`Comparator`, `ActionListener`都是函数式接口, 在需要函数式接口变量的参数位置, 可以使用lambda表达式进行替换. 注意只有一个抽象方法的接口与只有一个方法的接口不同, 只有一个方法的接口完全可以声明一个`Object`的方法. Java提供了很多有用的抽象函数接口可供使用, 例如断言等接口.
+
+**方法引用**:方法引用可以将现成的方法转化为lambda表达式再转为函数式接口的实现类对象. 当希望用lambda表达式实现的动作已经有现成的方法实现时, 可以用方法引用代替.
+```java
+Timer t = new Timer(100, event->System.out.println(event)); // 可以用以下方法引用代替
+Timer t = new Timer(100, System.out::println);
+```
+方法引用有以下几种形式:
+- object::instanceMethod
+- Class::staticMethod
+- Class::instanceMethod
+
+其中需要理解一下的是第三个, 当调用实例方法时, 第一个参数作为方法的对象, 即`(x, y)->x.instanceMethod(y)`
+
+**构造器引用**: 构造器引用和方法引用类似, 只不过这里的方法名是`new`, 即 `Class::new`相当于`(x)->return new Class(x)`.
+
+**lambda表达式中的变量作用域**: lambda可以引用外部的变量, 但是只能使用外部的不可变对象, 并且其作用域和外部是一致的, 即lambda表达式中用的变量不能和外部变量重名. lambda表达式转化的对象会隐式的保存引用的外部对象, 作用相当于**闭包**.
+
+**编写函数接收lambda表达式**: 在需要接受lambda表达式的参数位置, 设置合适的函数式接口的变量就可以接受lambda表达式. Java提供了一系列实用函数式接口.
+
+<img src="pictures/CoreJavaV1/ch6_1.jpg" width=80%>
+
+**Comparator的实用静态方法:**
+
+**comparing方法**
+
+Comparator提供了一个更加实用的比较器构造器函数`Comparator.comparing`, 这个方法的参数可以是方法引用或lambda表达式, 用于获取对象的键. 例如:
+```java
+Arrays.sort(people, Comparator.comparing(Person::getName()));
+// 按照名字对people中的person进行排序
+```
+**thenCompare方法**
+
+该方法可以与`thenCompare`方法串联起来传入多个获取键的方法引用或lambda表达式, 当前者相等时,按照后面的键继续比较.
+```java
+Arrays.sort(people, Comparator.comparing(Person::getName()).thenCompare(Person.getAge()));
+```
+
+**Comparing, thenCompare方法变体**
+- 为了避免自动装箱, 可以使用`ComparingInt`和`thenCompareInt`等变体
+- 当获取键的方法可能获得null时, 需要指定这样的对象怎么排序, java提供了`Comparator.nullsFirst, Comparator.nullsLast`的适配器. 用法如下:
+  ```java
+  comparing(Person::getName(), Comparator.nullsFirst())
+  ```
+
+### 内部类
+
+定义在另一个类中的类
+
+**特性**:
+- 可以访问该类定义所在作用域的数据, 包括私有数据
+- 可对包中的其他类隐藏
+- 当定义回调函数时, 可以很方便的使用匿名内部类.
+- Java的内部类包含一个隐式引用, 指向实例化该内部对象的外部对象.[编译器修改内部类构造函数增加引用]
+- 虽然定义在外部类当中, 但是并不表示外部类包含内部类的实例这样一个数据成员, 它的实例化依然是通过某个方法中对该类的对象的构造.
+- 内部类可以定义成私有的, 而常规类只有包可见性和公开可见性.
+
+**语法**:
+
+在内部类中访问外部类中的变量, 更加明确的指定写法: `outClass.this`
+
+在外部显式的调用内部类的构造器: `outClass.innerClass obj = outObject.new innerClass(params)`
+
+**有用?必要?安全?**
+
+#### 局部内部类
+
+语法:
+
+变量作用域:
+
+访问控制:
+
+用途:
+
+#### 匿名内部类
+
+语法:
+
+变量作用域:
+
+访问控制:
+
+用途:
+
+#### 静态内部类
+
+语法:
+
+变量作用域:
+
+访问控制:
+
+用途:
+
+### 代理
