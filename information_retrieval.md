@@ -55,6 +55,44 @@ grep存在问题
 - 假设: 文档已知; 词组已知;
 - 问题: 如何判断文档, 如何定义和处理文档集合中的term vocabulary
 
+
+**倒排索引vs 正排索引**
+- 正排索引是从文档角度来找其中的单词,表示每个文档(用文档ID标识)都含有哪些单词, 以及每个单词出现了多少次(词频)及其出现位置(相对于文档首部的偏移量),所以每次搜索都是遍历所有文章.
+- 倒排索引是从单词角度找文档, 标识每个单词分别在那些文档中出现(文档ID), 以及在各自的文档中每个单词分别出现了多少次(词频)及其出现位置(相对于该文档首部的偏移量).
+
+## IIR: Index Construction
+
+**关键词**:RCV1, BSBI, SPIMI, 分布式索引, 动态索引
+
+RCV1: 1995-1996英文新闻文章数据集
+
+### BSBI Blocked Sort-Based Indexing
+
+---
+BSBIndexConstruction()
+
+1 n ← 0
+
+2 while (all documents have not been processed)
+
+3 do n ← n + 1
+
+4 block ← ParseNextBlock()
+
+5 BSBI-Invert(block)
+
+6 WriteBlockToDisk(block, fn)
+
+7 MergeBlocks(f1, . . . , fn; $f_{merged}$)
+
+---
+
+关键: block的尺寸
+
+### SPIMI Single-pass in-memory indexing
+
+
+
 ## IRR 5: Index Compression
 
 预处理中的一些步骤可以看做有损压缩: 小写化,停用词, porter, number elimination
@@ -171,3 +209,67 @@ F值:
 
 ## IIR 11: Probabilistic Information Retrieval
 
+IR中的概率模型
+- 系统对用户查询具有不确定性的理解
+- 系统对文档是否符合查询进行具有不确定性的猜测
+- 向量空间模型中更加相似的文档更加相关, 这并不直观和总是成立
+- 概率论能够提供更加直观和清晰的模型描述相关的概率
+
+**PRP原则:** 如果解锁得到的文档按照相关的概率倒叙排序,系统的效率将会是最高的(基本假设: 文档的相关性相互独立)
+
+**BIM模型(Binary Independence Model)**
+- 文档和查询表示成term的二值向量
+- term之间相互独立(朴素贝叶斯中的朴素假设, 不成立但是可用)
+
+模型中的bayes准则
+
+![](pictures/IRR/bayes_rule.png)
+
+- 其中$P(\vec{x}|R=1, \vec{q})$和$P(\vec{x}|R=0, \vec{q})$表示如果对于查询q,一个相关或不相关的文档被检索, 该文档是x的概率. 这个概率可用通过对整个集合进行统计获得.
+- $P(R=1|\vec{q})$,$P(R=0|\vec{q})$是先验概率, 可用相关文档在整个集合中的百分比来估计.
+
+可以通过对上式做比获得更加简单的表示, 
+
+![](pictures/IRR/bayes_rule1.png)
+
+其中$\frac{P(R=1|\vec{q})}{P(R=0|\vec{q})}$对于给定q是一个定值, 可以忽略.
+
+对$\frac{P(\vec{x}|R=1, \vec{q})}{P(\vec{x}|R=0, \vec{q})}$可以展开成
+$$\frac{P(\vec{x}|R=1, \vec{q})}{P(\vec{x}|R=0, \vec{q})} \varpropto \prod_{t:x_t=1} \frac{P(x_t=1|R=1, \vec{q})}{P(x_t=1|R=0, \vec{q})} \prod_{t:x_t=0} \frac{P(x_t=0|R=1, \vec{q})}{P(x_t=0|R=0, \vec{q})}$$
+
+上式整理并令$p_t=P(x_t=1|R=1, \vec{q})$, $u_t=P(x_t=1|R=0, \vec{q})$, 可以得到下式
+
+![](pictures/IRR/BIM1.png)
+
+另外的化简假设: 如果$q_t=0$, 则$p_t=u_t$(一个term没有出现在查询中,则它等概率的出现在相关和不相关文档中)
+
+$$\frac{P(\vec{x}|R=1, \vec{q})}{P(\vec{x}|R=0, \vec{q})} \varpropto \prod_{t:x_t=q_t=1} \frac{p_t}{u_t} \prod_{t:x_t=0, q_t=1} \frac{1-p_t}{1-u_t}$$
+
+继续化简, 将$x_t=1$和$x_t=0$两种情况合并, 有
+$$\frac{P(\vec{x}|R=1, \vec{q})}{P(\vec{x}|R=0, \vec{q})} \varpropto \prod_{t:x_t=q_t=1} \frac{p_t(1-u_t)}{u_t(1-p_t)} \prod_{t:q_t=1} \frac{1-p_t}{1-u_t} \varpropto \frac{p_t(1-u_t)}{u_t(1-p_t)}$$
+
+后一项对于给定的q是个常数可以忽略, 最后将累乘改为累加 ,取log, 就是检索状态值(RSV_d)
+$$RSV_d=\sum_{t:x_t=q_t=1} log \frac{p_t(1-u_t)}{u_t(1-p_t)}$$
+
+等价: 用查询中的terms的c_t, 即log odds ratios对文档进行排名
+$$c_t=log \frac{p_t}{(1-p_t)} - log \frac{u_t}{(1-u_t)}$$
+
+当c_t为正时, 表示更高的概率出现在相关文档, 当c_t为负时, 表示更高的概率出现在不相关文档.
+此时, 文档的得分可写成$RSV_d = \sum_{x_t=q_t=1} c_t$
+
+因此从操作层面上都可以使用倒排索引等计算向量空间模型和二值概率模型
+
+![](pictures/IRR/BIM2.png)
+
+进一步简化, 假设相关文档只占集合的很小比例, 则有以下化简
+$$log \frac{(1-u_t)}{u_t} = log \frac{N-df_t}{df_t} \approx log \frac{N}{df_t}$$
+**这和idf等价.**
+
+对于自治的检索系统, 没有相关性判断的数据集可用, 这种情况, 可令$p_t=0.5$, 依靠log N/df_t得到c_t进行排序, 对于短文本同样可用工作.
+
+### Okapi BM25
+文档长度, 词频相关的BIM改进模型.
+
+## IIR 12: Language Models for IR
+
+统计语言模型
