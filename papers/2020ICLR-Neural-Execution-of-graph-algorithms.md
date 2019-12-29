@@ -1,4 +1,8 @@
 # 2020ICRL-Neural execution of graph algorithms
+- [概括](#%e6%a6%82%e6%8b%ac)
+- [问题设定](#%e9%97%ae%e9%a2%98%e8%ae%be%e5%ae%9a)
+- [实验设定](#%e5%ae%9e%e9%aa%8c%e8%ae%be%e5%ae%9a)
+- [结果分析讨论](#%e7%bb%93%e6%9e%9c%e5%88%86%e6%9e%90%e8%ae%a8%e8%ae%ba)
 
 ## 概括
 使用GNN训练除能够用于多个图算法的算法执行器, 证明了GNN在图结构的输入上的强大表示能力.
