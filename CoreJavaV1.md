@@ -702,11 +702,41 @@ Arrays.sort(people, Comparator.comparing(Person::getName()).thenCompare(Person.g
 - 虽然定义在外部类当中, 但是并不表示外部类包含内部类的实例这样一个数据成员, 它的实例化依然是通过某个方法中对该类的对象的构造.
 - 内部类可以定义成私有的, 而常规类只有包可见性和公开可见性.
 
+举例: 
+```java
+class TalkingClock {
+  private int interval;
+  private boolean beep;
+
+  public TalkingClock(int interval, boolean beep){
+    ...
+  }
+  private void start() {
+    ActionListener listener = new TimePrinter(); // 内部类实例
+  }
+  public class TimePrinter implements ActionListener
+  {
+    public void actionPerformed(ActionEvent event) {
+      System.out.println("At the tone, the time is " + new Date());
+      if (beep) { // 能够访问外部类的私有成员
+        Toolkit.getDefaultToolkit().beep();
+      }
+    }
+  }
+}
+```
+
 **语法**:
 
 在内部类中访问外部类中的变量, 更加明确的指定写法: `outClass.this`
 
 在外部显式的调用内部类的构造器: `outClass.innerClass obj = outObject.new innerClass(params)`
+
+```java
+if (TalkingClock.this.beep) ... // 内部类中调用外部类实例的成员
+
+ActionListener listener = this.new TimePrinter(); // 外部类中显式实例化一个内部类.
+```
 
 **有用?必要?安全?**
 
@@ -723,16 +753,57 @@ Arrays.sort(people, Comparator.comparing(Person::getName()).thenCompare(Person.g
 
 访问控制: 局部内部类不能声明成`public`或`private`, 其只对当前代码块可见, 对外其他成员方法都不可见. 
 
-用途: 回调函数?
+用途: 回调函数
 
-#### 静态内部类
+##### 匿名内部类
 
-语法:
+当创建的类只需要创建一个对象时, 适合使用匿名内部类
 
-变量作用域:
+匿名类语法
 
-访问控制:
+```
+new SuperType(construction params)
+{
+  inner class methods and data
+};
+```
+`superType`可以是一个接口, 也可以是一个超类
 
-用途:
+```java
+public void start(int interval, boolean beep) {
+  ActionListener listener = new ActionListener()
+  {
+    public void actionPerformed(ActionEvent event) {
+      System.out.println("At the tone, the time is " + new Date());
+      if (beep) Toolkit.getDefaultToolkit().beep();
+    }
+  };
+  Timer t = new Timer(interval, listener);
+  t.start();
+}
+```
+
+利用匿名类可以使用*双括号*技巧构造数组列表, 当这个数组列表只在一个参数的地方用到时可以这样写
+```java
+// 原写法
+ArrayList<String> friends = new ArrayList<>();
+friends.add("harry");
+friends.add("Tony");
+invite(friends);
+
+// 匿名类的写法
+invite(ArrayList<String>(){{add("Harry"); add("Tony");}}) // 外层的括号建立了ArrayList的匿名子类, 内层括号则是一个对象构造块(第4章)
+```
+在生成日志或调试消息时, 有时希望打印类名, 但是使用`getClass()`对于静态方法不奏效, 这里可以使用匿名类获得外部类的类名.
+```java
+new Object(){}.getClass().getEnclosingClass(); //获得静态方法的类名, getEnclosingClass方法获得外围类
+```
+
+##### 静态内部类
+
+语法: 在定义内部类时, 加上`static`的关键字,即`public static class Pair`, 得到的就是静态内部类
+- 只有内部类能够声明为static, 声明后, 内部类没有对外部类的引用, 其他和内部类一致
+- 静态方法中构造内部类对象时, 必须使用静态内部类
+- 在接口中的内部类自动变成`public`和`static`的类
 
 ### 代理
