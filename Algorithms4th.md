@@ -261,6 +261,17 @@ Intuition: 找到数组中最小的放到第一位, 找到第二小的放到第�
 是否稳定: 稳定
 原地排序: 是
 运行时间与输入无关, 数据移动最少
+```java
+public static void sort(Comparable[] a) {
+    for (int i = 0; i < a.length; i++) {
+        int min = i;
+        for (int j = i+1; j < a.length; j++) {
+            if (less(a[j], a[min])) min = j;
+        }
+        if (min != i) exch(a, i, min);
+    }
+}
+```
 
 ### .2 插入排序
 
@@ -274,14 +285,9 @@ Intuition: 位于数组前部的元素都是有序的, 从第二个元素起, �
 public static void sort(Comparable[] a) {
     for (int i = 1; i < a.length; i++) {
         for (int j = i; j > 0; j--) {
-            if (less(a[j], a[j-1])) exch(a, j, j - 1);
-            else break;
+            for (int j = i; j > 0 && less(a[j], a[j-1]); i--) 
+                exch(a, j - 1, j);
         }
-        /*
-        这里可以简化代码为
-        for (int j = i; j > 0 && less(a[j], a[j-1]); i--) exch(a, j - 1, j);
-        性能提高, 可读性增强
-        */
     }
 }
 ```
@@ -293,7 +299,7 @@ public static void sort(Comparable[] a) {
 Intuition: 进行多次间距不同的插入排序, 提高纠正逆序对的效率. 希尔排序的间距取值有讲究. 不同的取值对应不同的实验复杂度下限.取h = h * 3 + 1的序列, 或斐波那契数列等方式
 使用到的数据结构: 数组
 复杂度: \<n^2 , 在不同的h取值策略表现不同, 适用于中等规模的任意顺序序列
-是否稳定: 稳定
+是否稳定: 不稳定
 原地排序: 是
 
 ```java
@@ -360,38 +366,85 @@ Intuition: 快排在实现过程中稍有不慎很容易出错,关键在于这�
 - 内循环的递增: 内循环的递增要使用 ++i和--j的形式, 保证遇到相同的元素后在下一次循环能够继续向前移动.
 - 结束的时候, 交换暂存val的位置的值和j(若val的位置在0), 保证切分位置前的值小于等于切分val的性质不变
 
-复杂度: n^2的下限, 对于随机数组能够接近nlgn
+复杂度: n^2的下限, 对于随机数组能够接近nlgn, 当数组已经是有序的情况, 如果不shuffle会落入n^2复杂度, 当数组元素完全相同时, 总会得到n^2的复杂度
+
 是否稳定: 否
+
 是否是原地排序: 是
 
+优化思路: 在部分有序的情形下, 关键问题在于如何选择pivot能够使得大于小于的数量差不多, 比如三采样或者打乱, 对于大量重复元素的情况, 采用3路切分能够提高效率.
 ```java
-public  static void sort(Comparable[] a) {
-        StdRandom.shuffle(a);
-        sort(a, 0, a.length - 1);
-}
-private static void sort(Comparable[] a, int lo, int hi) {
-    if (hi - lo < H) Insertion.sort(a, lo, hi + 1);
-    else {
-        Comparable val = a[lo];
-        int i = lo;
-        int j = hi + 1;
+// 传统快排
+class QuickSort extends Sort {
+    public void sort(Comparable[] a) {
+        if (a == null || a.length == 0) return ;
+        sort(a, 0, a.length-1);
+    }
+    private void sort(Comparable[] a, int left, int right) {
+        if (left >= right) return ;
+        int mid = partition(a, left, right);
+        System.out.println(Arrays.toString(a));
+        sort(a, left, mid-1);
+        sort(a, mid+1, right);
+    }
+    private int partition(Comparable[] a, int left, int right) {
+        Comparable pivot = a[left];
+        int i = left, j = right + 1;
         while (true) {
-            while (less(a[++i], val)) if (i == hi) break;
-            while (less(val, a[--j])) if (j == lo) break; // less 是严格小, 所以遇到相等的情况会停
+            // while (++i < j && less(a[i], pivot));
+            // while (--j >= i && less(pivot, a[j])); // 如果想这样写, 就需要>= 否则全大于的情况就会出错 但是这样写的确不好记
+            while (less(a[++i], pivot)) if (i == right) break;
+            while (less(pivot, a[--j])) if (j == left) break; // less 是严格小, 所以遇到相等的情况会停
             if (i >= j) break; // 等号成立时, 等于val, 否则i,j错位 一定会造成边界问题 思考val最小或最大的情况
             exch(a, i, j);
         }
-        exch(a, j, lo);
-        sort(a, lo, j - 1);
-        sort(a, j + 1, hi);
+        exch(a, left, j);
+        return j;
     }
 }
+
+// 用三采样来优化
+    private int partition(Comparable[] a, int left, int right) {
+        // 三采样
+        int mid = (left + right) >>> 1;
+        if (less(a[right], a[left])) exch(a, left, right);
+        if (less(a[right], a[mid])) exch(a, mid, right);
+        if (less(a[mid], a[left])) exch(a, mid, left);
+        // 此时 a[left] <= a[mid] <= a[right]
+        if (right - left < 3) return mid; // 注意 如果长度小于3的话, 交换就已经够了 往下会发生错误
+        exch(a, mid, left+1); // 把mid藏到left+1的位置
+        int i = left+1, j = right;
+        Comparable pivot = a[left+1];
+        while (true) {
+            while (less(a[++i], pivot)); // 因为有了两边的哨兵, 所以可以去除检查
+            while (less(pivot, a[--j]));
+            if (i >= j) break;
+            exch(a, i, j);
+        }
+        exch(a, j, left+1);
+        return j;
+    }
+
+// 用shuffle打乱成随机数组
+    private static void shuffle(Object[] a) {
+        for (int i = a.length-1; i > 0; i--) {
+            exch(a, i, (int)(Math.random()*i)); // random范围[0, 1), 在0-a之间随机选择一个数和a+1交换, a逐渐减小
+        }
+    }
+    public void sort(Comparable[] a) {
+        if (a == null || a.length == 0) return ;
+        shuffle(a);
+        sort(a, 0, a.length-1);
+    }
 ```
 
 shuffle的复杂度是O(n), 如果不采用shuffle的话可以采用三采样的方式, 三采样方式的注意点是首尾已经通过哨兵保证了不会越界，因此内循环可以进一步简化.
 
-> todo: 快排的优化和三采样方式
+三采样的方式的复杂度同样也是O(n), 虽然看似是O(1)的操作, 但是每次切分都要执行, 执行的次数可以按照以下递推式计算$T(n)=2T(n/2)+1, T(3)=1$, 得到的依然是个O(n)的表达式
 
+以上两种方法可以在一定程度上解决有序的问题, 对于更大规模的数组, 可以采用更加细致的抽样中位数方式, 例如js中对于大于1000的数组, 每两百个抽样一个数, 取结果的中位数
+
+但是上述方法还是无法处理重复元素的问题, 当重复元素较多时, 可以采用三路切分的方法, 将数组分为小于, 等于和大于三个部分.
 ## 2.4 优先队列与堆排序
 
 ### .1 基于二叉堆的优先队列
@@ -439,8 +492,244 @@ public pirvate sort(Comparable[] a) {
 
 有时候对数组排序, 该数组还具有与之无关的其他属性构成的数组, 排序时,他们也要同时变化.
 
-> todo : 带索引的最大堆的实现
+# 第三章 搜索与树算法
 
+## 二叉搜索树的遍历
+二叉搜索树的遍历, 常考知识点包括了各种遍历以及重建. 首先是遍历, 前中后序遍历的递归实现非常简洁, 但是其非递归实现才是经常被问到. **递归的本质就是栈.** 因此, 这三种遍历的非递归实现都依赖栈.
+
+三种遍历的非递归写法的模板.
+```java
+while( 栈非空 || p 非空)
+{
+if( p 非空)
+{
+    // 处理左儿子
+}
+else
+{
+    // 处理pop和右儿子
+}
+}
+```
+
+### 前序遍历
+前序遍历是在第一次遇到节点的时候, 将其加入序列当中, 因此在入栈时刻将其加入即可. 
+```java
+// 递归版本
+private void preOrder(TreeNode root) {
+    if (root == null) return ;
+    array.add(root.val);
+    preOrder(root.left);
+    preOrder(root.right);
+}
+
+// 非递归版本
+private void preOrder2(TreeNode root) {
+    Stack<TreeNode> s = new Stack<>();
+    TreeNode p = root;
+    while (p != null || !s.isEmpty()) {
+        while (p != null) {
+            array.add(p.val);
+            s.push(p);
+            p = p.left;
+        }
+        if (!s.isEmpty()) {
+            p = s.pop();
+            p = p.right;
+        }
+    }
+}
+
+// 最优雅的版本 因为栈的FILO特点, 先压右节点再压左节点
+public List<Integer> preorderTraversal(TreeNode root) {
+    List<Integer> list = new ArrayList<>();
+    if (root == null) {
+        return list;
+    }
+    Stack<TreeNode> stack = new Stack<>();
+    stack.push(root);
+    while (!stack.isEmpty()) {
+        TreeNode cur = stack.pop();
+        if (cur == null) {
+            continue;
+        }
+        list.add(cur.val);
+        stack.push(cur.right);
+        stack.push(cur.left);
+    }
+    return list;
+}
+```
+
+### 中序遍历
+中序遍历是在第二次遇到该节点的时候, 将其加入到序列中, 因此非递归实现将加入时机放到出栈时即可.
+```java
+// 递归版本
+private void inOrder(TreeNode root) {
+    if (root == null) return ;
+    inOrder(root.left);
+    array.add(root.val);
+    inOrder(root.right);
+}
+
+// 非递归版本
+private void inOrder2(TreeNode root) {
+    Stack<TreeNode> s = new Stack<>();
+    TreeNode p = root;
+    while (p != null || !s.isEmpty()) {
+        while (p != null) {
+            s.push(p);
+            p = p.left;
+        }
+        if (!s.isEmpty()) {
+            p = s.pop();
+            array.add(p.val);
+            p = p.right;
+        }
+    }
+}
+```
+
+### 后序遍历
+后续的非递归实现, 相比前面两个稍微有一点不同, 但是只要记住实现是靠**栈加上检查上一个是否是右儿子**就够了.
+```java
+// 递归版本
+private void postOrder(TreeNode root) {
+    if (root == null) return ;
+    postOrder(root.left);
+    postOrder(root.right);
+    array.add(root.val);
+}
+
+// 非递归版本
+public List<Integer> postorderTraversal(TreeNode root) {
+    List<Integer> result = new LinkedList<>();
+    Stack<TreeNode> s = new Stack<>();
+    TreeNode p = root, q = null;
+    while (p != null || !s.isEmpty()) {
+        while (p != null) {
+            s.push(p);
+            p = p.left;
+        }
+        if (!s.isEmpty()) {
+            p = s.peek();
+            if (p.right == null || q == p.right) {
+                result.add(p.val);
+                s.pop();
+                q = p;
+                p = null;
+            }
+            else {
+                p = p.right;
+            }
+        }
+    }
+    return result;
+}
+
+// 最优雅的版本
+public List<Integer> postorderTraversal(TreeNode root) {
+    List<Integer> list = new ArrayList<>();
+    if (root == null) {
+        return list;
+    }
+    Stack<TreeNode> stack = new Stack<>();
+    stack.push(root);
+    stack.push(root);
+    while (!stack.isEmpty()) {
+        TreeNode cur = stack.pop();
+        if (cur == null) {
+            continue;
+        }
+        if (!stack.isEmpty() && cur == stack.peek()) {
+            stack.push(cur.right);
+            stack.push(cur.right);
+            stack.push(cur.left);
+            stack.push(cur.left);
+        } else {
+            list.add(cur.val);
+        }
+    }
+    return list;
+}
+```
+## 红黑树
+红黑树是2-3查找树的代码实现. 2-3查找树是一类平衡树, 包括2-节点和3-节点两种节点, 分别包含一个元素和两个链接,以及两个元素和三个链接. 2-3查找树的生长是自底向上的, 首先把叶子节点先长大成3-节点, 如果已经是3-节点暂时变为4-节点后, 向上传递中间节点, 如果父节点是个2-节点则会生长为3-节点, 如果一路上都是3-节点, 到根节点时根节点会从3-节点往上生长一层, 因为每次树的层数增加都是在根节点发生的, 所以所有叶子节点的深度相同.
+
+![根的生长示意图](http://cdn.hustcaid.com/FvQiAE3gxkb5QGripFpjUsbTBPrp.png)
+
+2-3查找树的插入共有六种情形, 在下图中进行了总结
+
+![插入的情形](http://cdn.hustcaid.com/FrdD5bLUcwsCCKyrT610eIQlAKSW.png)
+
+2-3查找树虽然具有很好的性质, 但是2-节点和3-节点两种节点混杂, 给实现造成了一定的困难, 而红黑树的思想就是用红的左链接链接3-节点的两个元素, 黑的链接表示2-3查找树中的普通链接, 当红链接平放时, 红黑树就是2-3查找树. 通过这样的变换, 能够统一树的节点, 也不用修改BST中get等操作.
+
+红黑树的特性:
+- 红链接一定是左链接
+- 没有两条连续的红链接
+- 该树*完美黑色平衡*, 即从根到任何叶子节点的黑链接数量相同.
+
+红黑树实现中的三种变换
+
+左旋转 & 右旋转
+
+![](http://cdn.hustcaid.com/Fqu0pvOrFZFUfBfk_lOYSTOmDka3.png)
+
+左旋转在出现右链接为红的时候使用, 而右旋转使用的情况在两个连续的红色的左链接出现时. 
+
+颜色转换
+
+![](http://cdn.hustcaid.com/Ftngl-HfiA4_oPZf7GaAqDofXNDk.png)
+
+- 如果右儿子是红色的, 则进行左旋转
+- 如果左儿子是红色的并且它的左儿子是红色, 则进行右旋转
+- 如果左右儿子都是红色的, 进行颜色转换
+
+![](http://cdn.hustcaid.com/FgRK16SyRQxa5CG3SkjfRq5wpU6v.png)
+
+```java
+private Node put(Node h, Key k, Value v) {
+    if (h == null)
+        return new Node(k, v, RED);
+    int comp = h.key.compareTo(k);
+    if (comp < 0) h.right = put(h.right, k, v); // key比h大
+    else if (comp > 0) h.left = put(h.left, k, v);
+    else h.val = val;
+    // 按照递归在新节点的路径上从下往上 处理红黑边关系
+    // 处理顺序按照 是否有左旋 -> 是否有右旋 -> 是否颜色转换
+    if (isRed(h.right) && !isRed(h.left)) h = RotateLeft(h);
+    if (isRed(h.left) && isRed(h.left.left)) h = RotateRight(h); // isRed的先后不能换, left为null时, 第一个为false
+    if (isRed(h.left) && isRed(h.right)) flipColor(h);
+
+    // 如果计算N
+    h.N = size(h.left) + size(h.right) + 1;
+    return h;
+}
+
+private Node RotateLeft(Node h) {
+    Node x = h.right;
+    h.right = x.left;
+    x.left = h;
+    x.color = h.color;
+    h.color = RED;
+    return x;
+}
+
+private Node RotateRight(Node h) {
+    Node x = h.left;
+    h.left = x.right;
+    x.right = h;
+    x.color = h.color;
+    h.color = RED;
+    return x;
+}
+
+private void flipColor(Node h) {
+    h.left.color = BLACK;
+    h.right.color = BLACK;
+    h.color = RED;
+}
+```
 
 # 第五章 字符串
 
