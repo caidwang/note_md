@@ -1,30 +1,43 @@
 - [Java 技巧](#java-%e6%8a%80%e5%b7%a7)
-- [数组与矩阵](#%e6%95%b0%e7%bb%84%e4%b8%8e%e7%9f%a9%e9%98%b5)
-  - [283. Move Zeroes](#283-move-zeroes)
-  - [k-Sum类题目 [双指针, Hash, 排序]](#k-sum%e7%b1%bb%e9%a2%98%e7%9b%ae-%e5%8f%8c%e6%8c%87%e9%92%88-hash-%e6%8e%92%e5%ba%8f)
-    - [2Sum](#2sum)
-    - [3Sum & 4Sum](#3sum--4sum)
-  - [119. Pascal's Triangle II [原地迭代]](#119-pascals-triangle-ii-%e5%8e%9f%e5%9c%b0%e8%bf%ad%e4%bb%a3)
-  - [844. Backspace String Compare[双指针代替栈]](#844-backspace-string-compare%e5%8f%8c%e6%8c%87%e9%92%88%e4%bb%a3%e6%9b%bf%e6%a0%88)
+- [算法思想](#%e7%ae%97%e6%b3%95%e6%80%9d%e6%83%b3)
+  - [双指针](#%e5%8f%8c%e6%8c%87%e9%92%88)
+    - [有序2-SUM](#%e6%9c%89%e5%ba%8f2-sum)
+    - [k-diff](#k-diff)
+      - [532. K-diff Pairs in an Array](#532-k-diff-pairs-in-an-array)
+    - [双指针代替栈](#%e5%8f%8c%e6%8c%87%e9%92%88%e4%bb%a3%e6%9b%bf%e6%a0%88)
+  - [排序](#%e6%8e%92%e5%ba%8f)
+  - [贪心思想](#%e8%b4%aa%e5%bf%83%e6%80%9d%e6%83%b3)
+  - [二分查找](#%e4%ba%8c%e5%88%86%e6%9f%a5%e6%89%be)
+  - [分治](#%e5%88%86%e6%b2%bb)
+    - [Majority Element](#majority-element)
+      - [169. Majority Element](#169-majority-element)
+      - [229. Majority Element II](#229-majority-element-ii)
+  - [搜索](#%e6%90%9c%e7%b4%a2)
+  - [动态规划](#%e5%8a%a8%e6%80%81%e8%a7%84%e5%88%92)
+  - [数学](#%e6%95%b0%e5%ad%a6)
+- [数据结构相关](#%e6%95%b0%e6%8d%ae%e7%bb%93%e6%9e%84%e7%9b%b8%e5%85%b3)
+  - [链表](#%e9%93%be%e8%a1%a8)
+  - [树](#%e6%a0%91)
+  - [栈与队列](#%e6%a0%88%e4%b8%8e%e9%98%9f%e5%88%97)
+  - [哈希表](#%e5%93%88%e5%b8%8c%e8%a1%a8)
+    - [1002 Find Common Character](#1002-find-common-character)
+    - [888. Fair Candy Swap](#888-fair-candy-swap)
+  - [字符串](#%e5%ad%97%e7%ac%a6%e4%b8%b2)
+  - [数组与矩阵](#%e6%95%b0%e7%bb%84%e4%b8%8e%e7%9f%a9%e9%98%b5)
+    - [283. Move Zeroes](#283-move-zeroes)
+    - [k-Sum类题目 [双指针, Hash, 排序]](#k-sum%e7%b1%bb%e9%a2%98%e7%9b%ae-%e5%8f%8c%e6%8c%87%e9%92%88-hash-%e6%8e%92%e5%ba%8f)
+      - [2Sum](#2sum)
+      - [3Sum & 4Sum](#3sum--4sum)
+    - [119. Pascal's Triangle II [原地迭代]](#119-pascals-triangle-ii-%e5%8e%9f%e5%9c%b0%e8%bf%ad%e4%bb%a3)
+    - [844. Backspace String Compare[双指针代替栈]](#844-backspace-string-compare%e5%8f%8c%e6%8c%87%e9%92%88%e4%bb%a3%e6%9b%bf%e6%a0%88)
+  - [图](#%e5%9b%be)
+  - [位运算](#%e4%bd%8d%e8%bf%90%e7%ae%97)
   - [回文串类型](#%e5%9b%9e%e6%96%87%e4%b8%b2%e7%b1%bb%e5%9e%8b)
     - [234. Palindrome Linked List](#234-palindrome-linked-list)
     - [125. Valid Palindrome](#125-valid-palindrome)
     - [9. Palindrome Number](#9-palindrome-number)
-  - [k-diff类型](#k-diff%e7%b1%bb%e5%9e%8b)
-    - [532. K-diff Pairs in an Array[双指针]](#532-k-diff-pairs-in-an-array%e5%8f%8c%e6%8c%87%e9%92%88)
-- [字符串](#%e5%ad%97%e7%ac%a6%e4%b8%b2)
-- [栈与队列](#%e6%a0%88%e4%b8%8e%e9%98%9f%e5%88%97)
-- [哈希表](#%e5%93%88%e5%b8%8c%e8%a1%a8)
-  - [1002 Find Common Character](#1002-find-common-character)
-  - [888. Fair Candy Swap](#888-fair-candy-swap)
-- [排序](#%e6%8e%92%e5%ba%8f)
-- [图](#%e5%9b%be)
-- [动态规划](#%e5%8a%a8%e6%80%81%e8%a7%84%e5%88%92)
-- [分治](#%e5%88%86%e6%b2%bb)
-  - [Majority Element](#majority-element)
 
 # Java 技巧
-
 - ArrayList<Integer> 和 int[] 的转换
   ```
   int [] ints = list.stream().mapToInt(Integer::intValue).toArray();
@@ -38,11 +51,214 @@
   ```java
   if((x & 1) == 0) // then do something
   ``` 
-- 
 
-# 数组与矩阵
+# 算法思想
+## 双指针
+双指针分为两种情况, 一种是搜索一种是交换. 
 
-## 283. Move Zeroes
+搜索又包括了一左一右向中间搜索, 和两个都从左边出发向右边搜索. 双指针搜索的前提是有序, 如果无序可以考虑先排序或用hash. 搜索时通常只有一层while循环, 因此边界条件相对简单, 需要处理的就是元素重复的问题. 
+
+交换的情况稍微复杂一些, 因为有一个外循环和一个寻找条件符合的内循环(也可以用一层循环, 但是每次移动一格效率更低), 如果采用两层循环, 需要处理内层边界条件的问题, 可以参考快排的切分实现, 模板如下:
+```java
+while (left < right) {
+    while (valid(array[++left])) // 采用++a的形式避免卡在!valid的位置 
+        {if (left == array.length-1) break;} // 需要哨兵
+    while (valid(array[--right])) {if (right == 0) break;}
+    if (left >= right) break;
+    exch(array, left, right);
+}
+```
+
+### 有序2-SUM
+[2-sum问题](#2sum)
+### k-diff
+k-diff类型给定一个数组判断数组中两个元素之差小于等于k或只等于k的数量.
+
+#### 532. K-diff Pairs in an Array
+这道题的关键是想到排序才能解决.
+```java
+class Solution {
+    public int findPairs(int[] nums, int k) {
+        if (nums.length < 2 && k < 0) return 0;
+        Arrays.sort(nums);
+        int i = 0, j = 1, ret = 0;
+        while (i < nums.length && j < nums.length) {
+            if (nums[j] - nums[i] < k) j++;
+            else if (nums[j] - nums[i] > k) i++;
+            else  {
+                if (i != j) {
+                ret += 1;
+                i++; // 如果有重复计数
+                while (i < nums.length && nums[i] == nums[i-1]) i++;
+                }
+                else j++;
+            }
+        }
+        return ret;
+    }    
+}
+```
+
+### 双指针代替栈
+[844. Backspace String Compare](#844-backspace-string-compare%e5%8f%8c%e6%8c%87%e9%92%88%e4%bb%a3%e6%9b%bf%e6%a0%88)
+
+## 排序
+
+## 贪心思想
+
+## 二分查找
+
+## 分治
+### Majority Element
+Moore's voting最大投票算法, [算法介绍](https://blog.csdn.net/huanghanqian/article/details/74188349) 使用的是分治思想, 即如果当`count`降为零时, 说明在前面的子序列中不存在超过1/k的元素.
+
+#### 169. Majority Element
+基本的思路是可以拿map做, 但是这里精巧之处在于超过n/2, 也就是说, 所有其他的都没有它一个人加起来多, 因此可以用它和其他数字抵消, 来达到count最后能为正数的元素的效果.
+```java
+class Solution {
+    public int majorityElement(int[] nums) {
+        int count = 0, candidate = nums[0];
+        for (int i : nums) {
+            if (i == candidate) count++;
+            else {
+                if (count == 0) {
+                    count = 1;
+                    candidate = i;
+                }
+                else count--;
+            }
+        }
+        return candidate;
+    }
+}
+```
+
+#### 229. Majority Element II
+
+上一题的扩展, 对于n/3的情形, 最多只有可能有两个元素, 和上一题的思路类似, 记录两个元素, `cnt`记录了当前元素需要配对的数量, 如果出现了两个元素以外的元素, 则构成一个三元对, 能够消除. 需要注意的点:
+若列表中只有一种元素怎么处理; 虽然`candidate`有值, 但是可能只是在子列中超过三分之一, 需要最后遍历一遍进行检查.
+
+```java
+class Solution {
+    public List<Integer> majorityElement(int[] nums) {
+        List<Integer> ret = new ArrayList<>();
+        if (nums.length == 0) return ret;
+        int candidate1 = nums[0], candidate2 = nums[0];
+        int cnt1 = 0; int cnt2 = 0;
+        int n = nums.length;
+        for (int v : nums) {
+            if (v == candidate1) {
+                cnt1++;
+            }
+            else if (v == candidate2) {
+                cnt2++;
+            }
+            else if (cnt1 == 0) {
+                candidate1 = v;
+                cnt1 = 1;
+            }
+            else if (cnt2 == 0) {
+                candidate2 = v;
+                cnt2 = 1;
+            }
+            else {
+                cnt1--;
+                cnt2--;
+            }
+        }
+        cnt1 = 0;
+        cnt2 = 0;
+        for (int v : nums) {
+            if (v == candidate1) cnt1++;
+            if (v == candidate2) cnt2++;
+        }
+        if (cnt1 > n / 3) ret.add(candidate1);
+        if (candidate2 != candidate1 && cnt2 > n / 3) ret.add(candidate2);
+        
+        return ret;
+    }
+}
+```
+
+
+## 搜索
+
+## 动态规划
+
+## 数学
+
+# 数据结构相关
+## 链表
+
+## 树
+
+## 栈与队列
+
+## 哈希表
+### 1002 Find Common Character
+
+总体思路是对的, 使用两个map结构分别记录总体的字符出现数量和当前string 的字符出现数量, 去两者中小的. 这里能够取巧的是范围是小写字母, 因此可以用int[26]代替Map记录, 比较两个结构和记录的时候速度都更快. 修改后的结果:
+```java
+class Solution {
+    public List<String> commonChars(String[] A) {
+        List<String> ans = new ArrayList<>();
+        int[] count = new int[26]; 
+        Arrays.fill(count, Integer.MAX_VALUE);
+        for (String a : A) {
+            int[] t = new int[26];
+            for (char c : a.toCharArray()) { 
+                t[c - 'a']++; 
+            }
+            for (int i = 0; i < 26; ++i) {
+                count[i] = Math.min(t[i], count[i]);
+            }
+        }
+        for (int i = 0; i < 26; ++i) {
+             if (count[i] == Integer.MAX_VALUE) 
+                 continue;
+             while (count[i]> 0) { 
+                 ans.add("" + (char)(i + 'a')); 
+                 count[i]--;
+             }
+        }
+        return ans;
+    }
+}
+```
+
+### 888. Fair Candy Swap
+
+这道题可以先排序再用双指针从头开始扫, 但是这样的性能不是最好的, 可以对B哈希.
+
+```java
+class Solution {
+    public int[] fairCandySwap(int[] A, int[] B) {
+        int[] ans = new int[2];
+        int sumA = 0, sumB = 0, diff;
+        for (int i: A) sumA += i;
+        boolean[] hashtable = new boolean[100001];
+        for (int i: B) {
+            sumB += i;
+            hashtable[i] = true;
+        }
+        diff = (sumA - sumB) / 2;
+        for (int i: A) {
+            if (i - diff > 0 && i - diff <= 100000 && hashtable[i - diff]) {
+                ans[0] = i;
+                ans[1] = i - diff;
+                break;
+            }
+        }
+        return ans;
+    }
+}
+```
+
+## 字符串
+
+## 数组与矩阵
+
+### 283. Move Zeroes
 
 注意全零的边界条件
 
@@ -62,9 +278,9 @@ class Solution {
 }
 ```
 
-## k-Sum类题目 [双指针, Hash, 排序]
+### k-Sum类题目 [双指针, Hash, 排序]
 k-sum类型是以2-sum为基础的变种和拓展, 包括k发生变化(2,3,4), 初始序列是否有序, 输出类型(true/false, 成立的下标, 子集的集合).
-### 2Sum
+#### 2Sum
 对于2 Sum而言, 暴力算法的时间复杂度为$O(n^2)$, 更好的解法有:
 - 若序列有序, 可以设置双指针从首尾向中间移动, 时间复杂度为O(n); 
 - 若无序, 考虑以O(n)对序列建立hash表(使用STL的map), 之后以O(1)的复杂度判断是否有解
@@ -72,10 +288,10 @@ k-sum类型是以2-sum为基础的变种和拓展, 包括k发生变化(2,3,4), �
 
 综上, 2sum问题的时间复杂度为O(n)
 > 采用hash表时,注意存在多个相同元素时的覆盖问题和自己和自己相加等于target的问题, 这种情况, 先检查已有元素, 再将当前数字加入hash表
-### 3Sum & 4Sum
+#### 3Sum & 4Sum
 对于3Sum及以上, 暴力算法的时间复杂度都在$O(n^2)$以上, 因此首先对序列进行排序的方法是可接受的.排序后, 固定部分元素将问题转化为有序序列的2Sum问题. 这类题目的输出类型常为所有可能的子集的集合, 对于一个加数相同的数字只使用一次, 不同的加数可以相等, 这类题目的另一个重要的提高速度的方法是, 寻找合适的条件剪枝, 例如3sum中, 最小的三个数之和大于target或者最大三个数之和小于target的情况可以直接剪枝.
 
-## 119. Pascal's Triangle II [原地迭代]
+### 119. Pascal's Triangle II [原地迭代]
 注意问题:
 1. 如果完全建一棵树出来, 可以做, 但是空间开销过大, 是k^2级的, 因此不可行
 2. 如果使用二项式公式, 当k较大时会上溢, 在k=21时就已经不行了, 阶乘很容易爆, 基本不要用.
@@ -97,7 +313,7 @@ class Solution {
 }
 ```
 
-## 844. Backspace String Compare[双指针代替栈]
+### 844. Backspace String Compare[双指针代替栈]
 
 用指针模拟栈移动, 从序列的尾端往前遍历遇到出栈条件时, 进行记录, 在向前移时消费出栈记录, 当两个栈都没有出栈记录可以消费时, 必须进行比较.
 
@@ -136,6 +352,10 @@ class Solution {
     }
 }
 ```
+
+## 图
+
+## 位运算
 
 ## 回文串类型
 ### 234. Palindrome Linked List
@@ -228,176 +448,8 @@ class Solution {
     }
 }
 ```
-## k-diff类型
-k-diff类型给定一个数组判断数组中两个元素之差小于等于k或只等于k的数量.
 
-### 532. K-diff Pairs in an Array[双指针]
 
-这道题的关键是想到排序才能解决.
-```java
-class Solution {
-    public int findPairs(int[] nums, int k) {
-        if (nums.length < 2 && k < 0) return 0;
-        Arrays.sort(nums);
-        int i = 0, j = 1, ret = 0;
-        while (i < nums.length && j < nums.length) {
-            if (nums[j] - nums[i] < k) j++;
-            else if (nums[j] - nums[i] > k) i++;
-            else  {
-                if (i != j) {
-                ret += 1;
-                i++;
-                while (i < nums.length && nums[i] == nums[i-1]) i++;
-                }
-                else j++;
-            }
-        }
-        return ret;
-    }    
-}
-```
-# 字符串
 
-# 栈与队列
 
-# 哈希表
 
-## 1002 Find Common Character
-
-总体思路是对的, 使用两个map结构分别记录总体的字符出现数量和当前string 的字符出现数量, 去两者中小的. 这里能够取巧的是范围是小写字母, 因此可以用int[26]代替Map记录, 比较两个结构和记录的时候速度都更快. 修改后的结果:
-```java
-class Solution {
-    public List<String> commonChars(String[] A) {
-        List<String> ans = new ArrayList<>();
-        int[] count = new int[26]; 
-        Arrays.fill(count, Integer.MAX_VALUE);
-        for (String a : A) {
-            int[] t = new int[26];
-            for (char c : a.toCharArray()) { 
-                t[c - 'a']++; 
-            }
-            for (int i = 0; i < 26; ++i) {
-                count[i] = Math.min(t[i], count[i]);
-            }
-        }
-        for (int i = 0; i < 26; ++i) {
-             if (count[i] == Integer.MAX_VALUE) 
-                 continue;
-             while (count[i]> 0) { 
-                 ans.add("" + (char)(i + 'a')); 
-                 count[i]--;
-             }
-        }
-        return ans;
-    }
-}
-```
-
-## 888. Fair Candy Swap
-
-这道题可以先排序再用双指针从头开始扫, 但是这样的性能不是最好的, 可以对B哈希.
-
-```java
-class Solution {
-    public int[] fairCandySwap(int[] A, int[] B) {
-        int[] ans = new int[2];
-        int sumA = 0, sumB = 0, diff;
-        for (int i: A) sumA += i;
-        boolean[] hashtable = new boolean[100001];
-        for (int i: B) {
-            sumB += i;
-            hashtable[i] = true;
-        }
-        diff = (sumA - sumB) / 2;
-        for (int i: A) {
-            // 你这个问题非常大, 写一个下标不考虑下标的范围么??!!!
-            if (i - diff > 0 && i - diff <= 100000 && hashtable[i - diff]) {
-                ans[0] = i;
-                ans[1] = i - diff;
-                break;
-            }
-        }
-        return ans;
-    }
-}
-```
-
-# 排序
-
-# 图
-
-# 动态规划
-
-# 分治
-
-## Majority Element
-Moore's voting最大投票算法, [算法介绍](https://blog.csdn.net/huanghanqian/article/details/74188349) 使用的是分治思想, 即如果当`count`降为零时, 说明在前面的子序列中不存在超过1/k的元素.
-
-**169. Majority Element**
-
-基本的思路是可以拿map做, 但是这里精巧之处在于超过n/2, 也就是说, 所有其他的都没有它一个人加起来多, 因此可以用它和其他数字抵消, 来达到count最后能为正数的元素的效果.
-```java
-class Solution {
-    public int majorityElement(int[] nums) {
-        int count = 0, candidate = nums[0];
-        for (int i : nums) {
-            if (i == candidate) count++;
-            else {
-                if (count == 0) {
-                    count = 1;
-                    candidate = i;
-                }
-                else count--;
-            }
-        }
-        return candidate;
-    }
-}
-```
-
-**229. Majority Element II**
-
-上一题的扩展, 对于n/3的情形, 最多只有可能有两个元素, 和上一题的思路类似, 记录两个元素, `cnt`记录了当前元素需要配对的数量, 如果出现了两个元素以外的元素, 则构成一个三元对, 能够消除. 需要注意的点:
-若列表中只有一种元素怎么处理; 虽然`candidate`有值, 但是可能只是在子列中超过三分之一, 需要最后遍历一遍进行检查.
-
-```java
-class Solution {
-    public List<Integer> majorityElement(int[] nums) {
-        List<Integer> ret = new ArrayList<>();
-        if (nums.length == 0) return ret;
-        int candidate1 = nums[0], candidate2 = nums[0];
-        int cnt1 = 0; int cnt2 = 0;
-        int n = nums.length;
-        for (int v : nums) {
-            if (v == candidate1) {
-                cnt1++;
-            }
-            else if (v == candidate2) {
-                cnt2++;
-            }
-            else if (cnt1 == 0) {
-                candidate1 = v;
-                cnt1 = 1;
-            }
-            else if (cnt2 == 0) {
-                candidate2 = v;
-                cnt2 = 1;
-            }
-            else {
-                cnt1--;
-                cnt2--;
-            }
-        }
-        cnt1 = 0;
-        cnt2 = 0;
-        for (int v : nums) {
-            if (v == candidate1) cnt1++;
-            if (v == candidate2) cnt2++;
-        }
-        if (cnt1 > n / 3) ret.add(candidate1);
-        if (candidate2 != candidate1 && cnt2 > n / 3) ret.add(candidate2);
-        
-        return ret;
-    }
-}
-```

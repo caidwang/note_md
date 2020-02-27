@@ -13,7 +13,7 @@
 - [算法 4th](Algorithms4th.md)
 - [PTA刷题总结](PTA%20Summary.md)
 - [LeetCode刷题总结](Leetcode%20Summary.md)
-- [剑指Offer 第二版](sword-pointing-to-offer.md)
+- [剑指Offer 第二版](剑指offer.md)
 
 ## 操作系统
 - [操作系统精髓与设计原理](操作系统.md)
