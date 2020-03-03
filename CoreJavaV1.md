@@ -3,7 +3,6 @@
 - [Java核心技术1](#java%e6%a0%b8%e5%bf%83%e6%8a%80%e6%9c%af1)
   - [基础程序设计结构](#%e5%9f%ba%e7%a1%80%e7%a8%8b%e5%ba%8f%e8%ae%be%e8%ae%a1%e7%bb%93%e6%9e%84)
     - [基础数据类型](#%e5%9f%ba%e7%a1%80%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b)
-- [char: java中的字符类型是unicode的一个代码单元,unicode编码可能占据1个代码单元,也可能占据2个, 因此使用char访问是一种过于底层的方法, 通常并不建议, 如果需要访问, 可以按照码点位置访问.`String.codePoints`可以获得字符串的码点位置. 参考资料](#char-java%e4%b8%ad%e7%9a%84%e5%ad%97%e7%ac%a6%e7%b1%bb%e5%9e%8b%e6%98%afunicode%e7%9a%84%e4%b8%80%e4%b8%aa%e4%bb%a3%e7%a0%81%e5%8d%95%e5%85%83unicode%e7%bc%96%e7%a0%81%e5%8f%af%e8%83%bd%e5%8d%a0%e6%8d%ae1%e4%b8%aa%e4%bb%a3%e7%a0%81%e5%8d%95%e5%85%83%e4%b9%9f%e5%8f%af%e8%83%bd%e5%8d%a0%e6%8d%ae2%e4%b8%aa-%e5%9b%a0%e6%ad%a4%e4%bd%bf%e7%94%a8char%e8%ae%bf%e9%97%ae%e6%98%af%e4%b8%80%e7%a7%8d%e8%bf%87%e4%ba%8e%e5%ba%95%e5%b1%82%e7%9a%84%e6%96%b9%e6%b3%95-%e9%80%9a%e5%b8%b8%e5%b9%b6%e4%b8%8d%e5%bb%ba%e8%ae%ae-%e5%a6%82%e6%9e%9c%e9%9c%80%e8%a6%81%e8%ae%bf%e9%97%ae-%e5%8f%af%e4%bb%a5%e6%8c%89%e7%85%a7%e7%a0%81%e7%82%b9%e4%bd%8d%e7%bd%ae%e8%ae%bf%e9%97%aestringcodepoints%e5%8f%af%e4%bb%a5%e8%8e%b7%e5%be%97%e5%ad%97%e7%ac%a6%e4%b8%b2%e7%9a%84%e7%a0%81%e7%82%b9%e4%bd%8d%e7%bd%ae-%e5%8f%82%e8%80%83%e8%b5%84%e6%96%99)
     - [变量](#%e5%8f%98%e9%87%8f)
       - [Tips](#tips)
     - [运算符](#%e8%bf%90%e7%ae%97%e7%ac%a6)
@@ -44,6 +43,7 @@
       - [局部内部类](#%e5%b1%80%e9%83%a8%e5%86%85%e9%83%a8%e7%b1%bb)
       - [静态内部类](#%e9%9d%99%e6%80%81%e5%86%85%e9%83%a8%e7%b1%bb)
     - [代理](#%e4%bb%a3%e7%90%86)
+      - [静态代理&动态代理](#%e9%9d%99%e6%80%81%e4%bb%a3%e7%90%86%e5%8a%a8%e6%80%81%e4%bb%a3%e7%90%86)
   - [异常](#%e5%bc%82%e5%b8%b8)
 
 ## 基础程序设计结构
@@ -67,11 +67,7 @@ Java包含8种基础数据类型:
 - double: 8字节, 精度小数点后11-15位
 - float: 4字节, 精度小数点后5-7位
 
-<<<<<<< HEAD
 char: java中的字符类型是unicode的一个代码单元,unicode编码可能占据1个代码单元,也可能占据2个, 因此使用char访问是一种过于底层的方法, 通常并不建议, 如果需要访问, 可以按照码点位置访问.`String.codePoints`可以获得字符串的码点位置. [参考资料](https://www.jianshu.com/p/668356dd8089)
-=======
-**char**: java中的字符类型是unicode的一个代码单元,unicode编码可能占据1个代码单元,也可能占据2个, 因此使用char访问是一种过于底层的方法, 通常并不建议, 如果需要访问, 可以按照码点位置访问.`String.codePoints`可以获得字符串的码点位置.
->>>>>>> update sword 27-31
 
 **boolean**: 取值true或false
 
@@ -750,6 +746,7 @@ Arrays.sort(people, Comparator.comparing(Person::getName()).thenCompare(Person.g
 用途:
 
 ### 代理
+#### 静态代理&动态代理
 
 ## 异常
 
