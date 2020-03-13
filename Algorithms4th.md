@@ -330,6 +330,7 @@ private static int H = 5;
 public static void sort(Comparable[] a) {
     aux = new Comparable[a.length];
     sort(a, 0, a.length - 1);
+    aux = null; // 防止内存泄露
 }
 private static void sort(Comparable[] a, int lo, int hi) {
     if (hi - lo < H) Insertion.sort(a, lo, hi+1);
@@ -383,7 +384,6 @@ class QuickSort extends Sort {
     private void sort(Comparable[] a, int left, int right) {
         if (left >= right) return ;
         int mid = partition(a, left, right);
-        System.out.println(Arrays.toString(a));
         sort(a, left, mid-1);
         sort(a, mid+1, right);
     }
