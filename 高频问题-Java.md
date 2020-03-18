@@ -3,6 +3,7 @@
   - [值传递和引用传递区别, Java中有引用传递么?](#%e5%80%bc%e4%bc%a0%e9%80%92%e5%92%8c%e5%bc%95%e7%94%a8%e4%bc%a0%e9%80%92%e5%8c%ba%e5%88%ab-java%e4%b8%ad%e6%9c%89%e5%bc%95%e7%94%a8%e4%bc%a0%e9%80%92%e4%b9%88)
   - [创建线程的方法](#%e5%88%9b%e5%bb%ba%e7%ba%bf%e7%a8%8b%e7%9a%84%e6%96%b9%e6%b3%95)
   - [静态代理&动态代理](#%e9%9d%99%e6%80%81%e4%bb%a3%e7%90%86%e5%8a%a8%e6%80%81%e4%bb%a3%e7%90%86)
+  - [为什么String设计成不可变的](#%e4%b8%ba%e4%bb%80%e4%b9%88string%e8%ae%be%e8%ae%a1%e6%88%90%e4%b8%8d%e5%8f%af%e5%8f%98%e7%9a%84)
 - [并发](#%e5%b9%b6%e5%8f%91)
   - [Lock和synchronized的区别：](#lock%e5%92%8csynchronized%e7%9a%84%e5%8c%ba%e5%88%ab)
   - [volatile关键字的作用](#volatile%e5%85%b3%e9%94%ae%e5%ad%97%e7%9a%84%e4%bd%9c%e7%94%a8)
@@ -38,6 +39,13 @@ Runable和Callable的区别是什么?
 
 ### 静态代理&动态代理
 
+### 为什么String设计成不可变的
+- 因为String在Java中是不可变的。Java运行时环境可以节省大量的堆空间，因为不同的String变量可以引用池中的相同String变量。如果String不是不可变的，那么String缓冲池失去作用，因为任何变量已经改变了值，它也会反映在其他变量中。
+- 如果String是可变的，那么它将对应用程序造成严重的安全威胁。例如，数据库用户名，密码作为String传递以获取数据库连接，并在套接字编程主机和端口详细信息中作为String传递。由于String是不可变的，因此无法更改其值，否则任何黑客都可能更改引用的值以导致应用程序中出现安全问题。
+- 由于String是不可变的，因此对于多线程是安全的。可以跨不同的线程共享单个String实例。这避免了使用同步来保证线程安全。字符串是隐式线程安全的。
+- 字符串在java类加载器中使用，不可变性提供了安全性，类由Classloader加载。例如，假设尝试加载java.sql.Connection类的实例，但引用的值更改为myhacked.Connection类，可以对数据库执行不需要的操作。
+- 由于String是不可变的，因此在创建时缓存它的哈希码，不需要再次计算。这使得它成为Map中键的一个很好的候选者，它的处理速度比其他HashMap键对象快。这就是String是最广泛用作HashMap键的原因
+
 ## 并发
 ### Lock和synchronized的区别：
 - Lock是一个接口，而synchronized是Java中的关键字，synchronized是内置的语言实现, synchonized在编译时用管程实现了互斥和同步
@@ -72,3 +80,7 @@ Runable和Callable的区别是什么?
 ### 理解代理模式，结合 Spring 中的 AOP 回答
 
 ### 分析 JDK 中常用的设计模式，例如装饰者模式、适配器模式、迭代器模式等
+
+
+
+
