@@ -1,6 +1,6 @@
 # LeetCode 刷题总结
 
-主要筛选自cyc2018题库, 加上自己的补充
+主要筛选自[cyc2018题库](https://github.com/CyC2018/CS-Notes/blob/master/notes/Leetcode%20%E9%A2%98%E8%A7%A3%20-%20%E7%9B%AE%E5%BD%95.md), 加上自己的补充
 
 - 算法思想
   - [双指针](leetcodes/leetcode-two-points.md)
@@ -13,7 +13,7 @@
   - 数学
 
 - 数据结构相关
-  - 链表
+  - [链表](leetcodes/leetcode-linkedlist.md)
   - [树](leetcodes/leetcode-tree.md)
   - 栈与队列
   - [哈希表](leetcodes/leetcode-hash.md)

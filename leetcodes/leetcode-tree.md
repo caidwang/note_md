@@ -15,10 +15,8 @@
   - [1. 修剪二叉查找树](#1-%e4%bf%ae%e5%89%aa%e4%ba%8c%e5%8f%89%e6%9f%a5%e6%89%be%e6%a0%91)
   - [2. 寻找二叉查找树的第 k 个元素](#2-%e5%af%bb%e6%89%be%e4%ba%8c%e5%8f%89%e6%9f%a5%e6%89%be%e6%a0%91%e7%9a%84%e7%ac%ac-k-%e4%b8%aa%e5%85%83%e7%b4%a0)
   - [5. 二叉树的最近公共祖先](#5-%e4%ba%8c%e5%8f%89%e6%a0%91%e7%9a%84%e6%9c%80%e8%bf%91%e5%85%ac%e5%85%b1%e7%a5%96%e5%85%88)
-  - [6. 从有序数组中构造二叉查找树](#6-%e4%bb%8e%e6%9c%89%e5%ba%8f%e6%95%b0%e7%bb%84%e4%b8%ad%e6%9e%84%e9%80%a0%e4%ba%8c%e5%8f%89%e6%9f%a5%e6%89%be%e6%a0%91)
   - [7. 根据有序链表构造平衡的二叉查找树](#7-%e6%a0%b9%e6%8d%ae%e6%9c%89%e5%ba%8f%e9%93%be%e8%a1%a8%e6%9e%84%e9%80%a0%e5%b9%b3%e8%a1%a1%e7%9a%84%e4%ba%8c%e5%8f%89%e6%9f%a5%e6%89%be%e6%a0%91)
   - [8. 在二叉查找树中寻找两个节点，使它们的和为一个给定值](#8-%e5%9c%a8%e4%ba%8c%e5%8f%89%e6%9f%a5%e6%89%be%e6%a0%91%e4%b8%ad%e5%af%bb%e6%89%be%e4%b8%a4%e4%b8%aa%e8%8a%82%e7%82%b9%e4%bd%bf%e5%ae%83%e4%bb%ac%e7%9a%84%e5%92%8c%e4%b8%ba%e4%b8%80%e4%b8%aa%e7%bb%99%e5%ae%9a%e5%80%bc)
-  - [9. 在二叉查找树中查找两个节点之差的最小绝对值](#9-%e5%9c%a8%e4%ba%8c%e5%8f%89%e6%9f%a5%e6%89%be%e6%a0%91%e4%b8%ad%e6%9f%a5%e6%89%be%e4%b8%a4%e4%b8%aa%e8%8a%82%e7%82%b9%e4%b9%8b%e5%b7%ae%e7%9a%84%e6%9c%80%e5%b0%8f%e7%bb%9d%e5%af%b9%e5%80%bc)
   - [10. 寻找二叉查找树中出现次数最多的值](#10-%e5%af%bb%e6%89%be%e4%ba%8c%e5%8f%89%e6%9f%a5%e6%89%be%e6%a0%91%e4%b8%ad%e5%87%ba%e7%8e%b0%e6%ac%a1%e6%95%b0%e6%9c%80%e5%a4%9a%e7%9a%84%e5%80%bc)
 - [Trie](#trie)
   - [1. 实现一个 Trie](#1-%e5%ae%9e%e7%8e%b0%e4%b8%80%e4%b8%aa-trie)
@@ -499,32 +497,14 @@ public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
 }
 ```
 
-### 6. 从有序数组中构造二叉查找树
-
-108\. Convert Sorted Array to Binary Search Tree (Easy)
-
-[Leetcode](https://leetcode.com/problems/convert-sorted-array-to-binary-search-tree/description/) / [力扣](https://leetcode-cn.com/problems/convert-sorted-array-to-binary-search-tree/description/)
-
-```java
-public TreeNode sortedArrayToBST(int[] nums) {
-    return toBST(nums, 0, nums.length - 1);
-}
-
-private TreeNode toBST(int[] nums, int sIdx, int eIdx){
-    if (sIdx > eIdx) return null;
-    int mIdx = (sIdx + eIdx) / 2;
-    TreeNode root = new TreeNode(nums[mIdx]);
-    root.left =  toBST(nums, sIdx, mIdx - 1);
-    root.right = toBST(nums, mIdx + 1, eIdx);
-    return root;
-}
-```
 
 ### 7. 根据有序链表构造平衡的二叉查找树
 
 109\. Convert Sorted List to Binary Search Tree (Medium)
 
 [Leetcode](https://leetcode.com/problems/convert-sorted-list-to-binary-search-tree/description/) / [力扣](https://leetcode-cn.com/problems/convert-sorted-list-to-binary-search-tree/description/)
+
+思路: 快慢指针找找到中间节点. 用前半段和后半段链表, 递归查找.
 
 ```html
 Given the sorted linked list: [-10,-3,0,5,9],
@@ -609,45 +589,6 @@ private void inOrder(TreeNode root, List<Integer> nums) {
 }
 ```
 
-### 9. 在二叉查找树中查找两个节点之差的最小绝对值
-
-530\. Minimum Absolute Difference in BST (Easy)
-
-[Leetcode](https://leetcode.com/problems/minimum-absolute-difference-in-bst/description/) / [力扣](https://leetcode-cn.com/problems/minimum-absolute-difference-in-bst/description/)
-
-```html
-Input:
-
-   1
-    \
-     3
-    /
-   2
-
-Output:
-
-1
-```
-
-利用二叉查找树的中序遍历为有序的性质，计算中序遍历中临近的两个节点之差的绝对值，取最小值。
-
-```java
-private int minDiff = Integer.MAX_VALUE;
-private TreeNode preNode = null;
-
-public int getMinimumDifference(TreeNode root) {
-    inOrder(root);
-    return minDiff;
-}
-
-private void inOrder(TreeNode node) {
-    if (node == null) return;
-    inOrder(node.left);
-    if (preNode != null) minDiff = Math.min(minDiff, node.val - preNode.val);
-    preNode = node;
-    inOrder(node.right);
-}
-```
 
 ### 10. 寻找二叉查找树中出现次数最多的值
 
@@ -707,6 +648,14 @@ private void inOrder(TreeNode node, List<Integer> nums) {
 <div align="center"> <img src="https://cs-notes-1256109796.cos.ap-guangzhou.myqcloud.com/5c638d59-d4ae-4ba4-ad44-80bdc30f38dd.jpg"/> </div><br>
 
 Trie，又称前缀树或字典树，用于判断字符串是否存在或者是否具有某种字符串前缀。
+
+基本结构:
+```java
+private class Node {
+        Node[] childs = new Node[26];
+        boolean isLeaf;
+    }
+```
 
 ### 1. 实现一个 Trie
 
