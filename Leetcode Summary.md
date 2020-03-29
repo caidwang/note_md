@@ -15,7 +15,7 @@
 - 数据结构相关
   - [链表](leetcodes/leetcode-linkedlist.md)
   - [树](leetcodes/leetcode-tree.md)
-  - 栈与队列
+  - [栈与队列](leetcodes/leetcode-stack&queue.md)
   - [哈希表](leetcodes/leetcode-hash.md)
   - [字符串](leetcodes/leetcode-string.md)
   - [数组与矩阵](leetcodes/leetcode-array-matrix.md)
