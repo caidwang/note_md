@@ -7,6 +7,7 @@
 - [并发](#%e5%b9%b6%e5%8f%91)
   - [Lock和synchronized的区别：](#lock%e5%92%8csynchronized%e7%9a%84%e5%8c%ba%e5%88%ab)
   - [volatile关键字的作用](#volatile%e5%85%b3%e9%94%ae%e5%ad%97%e7%9a%84%e4%bd%9c%e7%94%a8)
+  - [Java中有哪些线程池类型, 适合什么场景](#java%e4%b8%ad%e6%9c%89%e5%93%aa%e4%ba%9b%e7%ba%bf%e7%a8%8b%e6%b1%a0%e7%b1%bb%e5%9e%8b-%e9%80%82%e5%90%88%e4%bb%80%e4%b9%88%e5%9c%ba%e6%99%af)
 - [JVM](#jvm)
   - [JVM内存结构](#jvm%e5%86%85%e5%ad%98%e7%bb%93%e6%9e%84)
   - [JMM线程模型](#jmm%e7%ba%bf%e7%a8%8b%e6%a8%a1%e5%9e%8b)
@@ -22,12 +23,12 @@
 
 ## 基本语法
 ### Java基本类型和大小
-- int: 4字节, 大小刚好超过20亿
-- short: 2字节
-- long: 8字节
 - byte: 1字节
-- double: 8字节
+- short: 2字节
+- int: 4字节, 大小刚好超过20亿
+- long: 8字节
 - float: 4字节
+- double: 8字节
 - boolean: 1字节
 - char: 2字节
 
@@ -60,6 +61,8 @@ Runable和Callable的区别是什么?
 
 保证线程之间的可见性和运行的有序性(禁止指令重排). 可见性 被修饰的变量,线程取变量要从主存取,计算完直接写入主存而不是高速缓存.(在jmm中定义的8种操作中, 即是read前紧跟load, store后紧跟write). 可见性的保证, 通过jit编译的代码反汇编可以看到在对volatile变量的赋值后紧跟一个lock指令, 这个指令相当于内存屏障, 将数据写回主存同时让其他处理器的高速缓存中中的该值失效. 另一方面, 由于Happen-before原则的存在, 可以通过volatile关键字实现捎带同步, 是比cas更加轻量和tricky的同步方式. 用volatile同步的限制场景是变量值不依赖原值. 例如累加就不可以用其实现.
 
+### Java中有哪些线程池类型, 适合什么场景
+
 ## JVM
 ### JVM内存结构
 
@@ -72,6 +75,42 @@ Runable和Callable的区别是什么?
 ## 设计模式
 
 ### 手写单例模式，特别是双重检验锁以及静态内部类
+
+```java
+//饿汉模式
+public class EagleSingleton {
+  private static EagleSingleton INSTANCE;
+  static {
+    INSTANCE = new EagleSingleton();
+  }
+  private EagleSingleton() {
+
+  }
+
+  public static EagleSingleton getInstance() {
+    return INSTANCE;
+  }
+}
+
+// 懒汉模式 DCL
+public class LazzySingleton {
+  private static volatile LazzySingleton INSTANCE;
+  private LazzySingleton() {
+
+  }
+  public static LazzySingleton getInstance() {
+    if (INSTANCE == null) {
+      synchronized(LazzySingleton.class) {
+        if (INSTANCE == null) {
+          INSTANCE = new LazzySingleton();
+        }
+      } 
+    }
+    return INSTANCE;
+  }
+}
+
+```
 
 ### 手写工厂模式
 
