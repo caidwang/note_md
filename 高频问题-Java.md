@@ -62,6 +62,12 @@ Runable和Callable的区别是什么?
 保证线程之间的可见性和运行的有序性(禁止指令重排). 可见性 被修饰的变量,线程取变量要从主存取,计算完直接写入主存而不是高速缓存.(在jmm中定义的8种操作中, 即是read前紧跟load, store后紧跟write). 可见性的保证, 通过jit编译的代码反汇编可以看到在对volatile变量的赋值后紧跟一个lock指令, 这个指令相当于内存屏障, 将数据写回主存同时让其他处理器的高速缓存中中的该值失效. 另一方面, 由于Happen-before原则的存在, 可以通过volatile关键字实现捎带同步, 是比cas更加轻量和tricky的同步方式. 用volatile同步的限制场景是变量值不依赖原值. 例如累加就不可以用其实现.
 
 ### Java中有哪些线程池类型, 适合什么场景
+- newCachedThreadPool()，它是一种用来处理大量短时间工作任务的线程池
+- newFixedThreadPool(int nThreads)，重用指定数目（nThreads）的线程，其背后使用的是无界的工作队列
+- newSingleThreadExecutor()，它的特点在于工作线程数目被限制为 1，操作一个无界的工作队列
+- newSingleThreadScheduledExecutor() 和 newScheduledThreadPool(int corePoolSize)，创建的是个 ScheduledExecutorService
+- newWorkStealingPool(int parallelism)
+- 自定义的ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler)
 
 ## JVM
 ### JVM内存结构
