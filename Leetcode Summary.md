@@ -8,7 +8,7 @@
   - 贪心思想
   - 二分查找
   - [分治](leetcodes/leetcode-branch.md)
-  - 搜索
+  - [搜索](leetcodes/leetcode-search.md)
   - 动态规划
   - 数学
 
