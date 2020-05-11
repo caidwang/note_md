@@ -9,7 +9,7 @@
   - [二分查找](leetcodes/leetcode-binSearch.md)
   - [分治](leetcodes/leetcode-branch.md)
   - [搜索](leetcodes/leetcode-search.md)
-  - 动态规划
+  - [动态规划](leetcodes/leetcode-dp.md)
   - 数学
 
 - 数据结构相关
