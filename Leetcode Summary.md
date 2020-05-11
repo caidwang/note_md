@@ -6,7 +6,7 @@
   - [双指针](leetcodes/leetcode-two-points.md)
   - 排序
   - 贪心思想
-  - 二分查找
+  - [二分查找](leetcodes/leetcode-binSearch.md)
   - [分治](leetcodes/leetcode-branch.md)
   - [搜索](leetcodes/leetcode-search.md)
   - 动态规划
