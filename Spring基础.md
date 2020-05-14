@@ -20,6 +20,8 @@
   - [自定义Bean的特性](#%e8%87%aa%e5%ae%9a%e4%b9%89bean%e7%9a%84%e7%89%b9%e6%80%a7)
   - [容器的扩展点](#%e5%ae%b9%e5%99%a8%e7%9a%84%e6%89%a9%e5%b1%95%e7%82%b9)
   - [基于注解的容器配置](#%e5%9f%ba%e4%ba%8e%e6%b3%a8%e8%a7%a3%e7%9a%84%e5%ae%b9%e5%99%a8%e9%85%8d%e7%bd%ae)
+    - [@Component](#component)
+    - [@Autowired](#autowired)
   - [classpath扫描和组件](#classpath%e6%89%ab%e6%8f%8f%e5%92%8c%e7%bb%84%e4%bb%b6)
   - [JSR 330风格的注解](#jsr-330%e9%a3%8e%e6%a0%bc%e7%9a%84%e6%b3%a8%e8%a7%a3)
   - [基于Java的容器配置](#%e5%9f%ba%e4%ba%8ejava%e7%9a%84%e5%ae%b9%e5%99%a8%e9%85%8d%e7%bd%ae)
@@ -424,6 +426,38 @@ xml的配置
 
 ## 基于注解的容器配置
 
+### @Component
+
+`@Component`注解是`@Service`,`@Controlor`, `@Repository`的元注解, 如果不指定bean的名称, 则Spring假定bean名称与以小写字母开头的类的名称相同
+
+使用`<context: component-scan base-package="name.of.package"/>`来指定一个用于搜索Spring bean的包列表, 该列表以逗号分隔
+
+包扫描的参数配置, 包扫描中包含可配置的参数说明对扫描对象进行筛选, `include-filter`说明了只扫描某一些类, `exclude-filter`说明了排除某些类. 上述两个配置项包含了type和expression两个参数.
+
+```xml
+<context:component-scan base-package="sample.example">
+    <context:include-filter type="annotation" expression="example.annotation.MyAnnotation"/>
+    <context:exclude-filter type="regex" expression=".*Detail"/>
+</context:component-scan>
+```
+
+上面举了一个参数配置的例子, 具体的type可选项包括:
+|type值|描述|
+|:-|:-|
+annotation|expresstion特性需要指定为一个注释的完全限定类名, 表示使用了该注释的bean类会被包含或排除
+assignable|expression特性需要指定为一个可以被bean类分配到的类或接口的完全限定名称
+aspectj|expression特性需要指定为一个用于过滤bean类的AspectJ表达式
+regex|expression特性需要指定为一个用于通过名称过滤bean类的正则表达式
+custom|expression特性需要指定为一个用于过滤bean类的`org.springframework.core.type.TypeFilter`接口的实现
+
+### @Autowired
+
+用于**通过类型**自动装配依赖项. 在创建一个类的实例时, Spring的`AutowiredAnnotationBeanProcessor`(一种BeanPostProcessor的实现, 该后处理还会处理JSR330的@Inject注释的字段)负责自动装配类中标注了`Autowired`的字段.
+
+使用@Autowired注释的字段不需要一定是公有的或具有相应的公有setter方法
+
+
+如果一个方法使用了@Autowired注释, 则该方法的参数是自动装配的
 ## classpath扫描和组件
 
 ## JSR 330风格的注解
