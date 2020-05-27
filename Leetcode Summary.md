@@ -4,7 +4,7 @@
 
 - 算法思想
   - [双指针](leetcodes/leetcode-two-points.md)
-  - 排序
+  - [排序](leetcodes/leetcode-sort.md)
   - 贪心思想
   - [二分查找](leetcodes/leetcode-binSearch.md)
   - [分治](leetcodes/leetcode-branch.md)
@@ -42,3 +42,8 @@
   ```java
   if((x & 1) == 0) // then do something
   ``` 
+- 二分查找中取中间值采用下述方式, 可以避免大数相加的上溢出
+  ```java
+  int mid = l + (h - l) / 2
+  ```
+- 判断上溢出的方法, 在加法或乘法前进行判断, 或使用long接收结果, 并进行判断

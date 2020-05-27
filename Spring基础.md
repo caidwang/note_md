@@ -22,8 +22,10 @@
   - [基于注解的容器配置](#%e5%9f%ba%e4%ba%8e%e6%b3%a8%e8%a7%a3%e7%9a%84%e5%ae%b9%e5%99%a8%e9%85%8d%e7%bd%ae)
     - [@Component](#component)
     - [@Autowired](#autowired)
+    - [@Qualifier](#qualifier)
+    - [JSR330的@Inject和@Named](#jsr330%e7%9a%84inject%e5%92%8cnamed)
+    - [JSR250的@Resource](#jsr250%e7%9a%84resource)
   - [classpath扫描和组件](#classpath%e6%89%ab%e6%8f%8f%e5%92%8c%e7%bb%84%e4%bb%b6)
-  - [JSR 330风格的注解](#jsr-330%e9%a3%8e%e6%a0%bc%e7%9a%84%e6%b3%a8%e8%a7%a3)
   - [基于Java的容器配置](#%e5%9f%ba%e4%ba%8ejava%e7%9a%84%e5%ae%b9%e5%99%a8%e9%85%8d%e7%bd%ae)
   - [Environment抽象](#environment%e6%8a%bd%e8%b1%a1)
   - [注册LoadTimeWeaver](#%e6%b3%a8%e5%86%8cloadtimeweaver)
@@ -456,11 +458,31 @@ custom|expression特性需要指定为一个用于过滤bean类的`org.springfra
 
 使用@Autowired注释的字段不需要一定是公有的或具有相应的公有setter方法
 
+如果一个方法使用了@Autowired注释, 则该方法的参数是自动装配的, 注意在创建bean实例之后, 将自动调用使用@Autowired注释的方法.
 
-如果一个方法使用了@Autowired注释, 则该方法的参数是自动装配的
+如果将@Autowired的required特性值设为false, 则该依赖项是可选的. 意味着如果将required特性值设置为false, 则即使在spring容器找不到匹配所需类型的bean时, 也不会抛出异常
+
+一个bean可以定义多个@Autowired注释的构造函数, 但是所有构造函数的required属性都需要是false, 否则会报错, spring选择构造函数时, 具有最大序号且满足依赖项的构造函数将被选中.
+
+### @Qualifier
+
+可以使用Spring的@Qualifier注释以及@Autowired注释来按名称自动连接依赖项, 具体的做法是, Autowired先选出候选项, Qualifier再指定唯一的bean
+
+可以通过定义一个类型化的集合来自动装配与限定符相关联的所有bean
+
+### JSR330的@Inject和@Named
+
+@Autowired和@Inject具有相同的语义, 用于按类型自动装配依赖项.如果在类型级别使用@Named注释, 它的作用就像@Component知识. 如果在方法参数级或构造函数参数级使用@Named注解, 作用就像@Qualifier注释
+
+### JSR250的@Resource
+
+该注释支持按字段和setter方法的名称自动装配. 不能用@Resource注释来自动装配构造函数参数和接受多个参数的方法.
+
+如果使用@Autowired和@Qualifier组合来按名称执行自动装配, Spring首先根据自动装配的字段类型来查找bean,以便通过由@Qualifier注释指定的bean名称来缩小候选范围到唯一的bean. 但是如果使用@Resource注释, Spring使用其指定的bean名称来定位唯一的bean
+
+Autowired不适用于本身为集合或Map类型的bean. 如果使用util模式的map元素定义一个bean, 则应该使用@Resource来自动装配bean
+
 ## classpath扫描和组件
-
-## JSR 330风格的注解
 
 ## 基于Java的容器配置
 
