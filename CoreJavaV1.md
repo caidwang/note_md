@@ -1,48 +1,45 @@
 # Java核心技术1
 
-- [Java核心技术1](#java%e6%a0%b8%e5%bf%83%e6%8a%80%e6%9c%af1)
-  - [基础程序设计结构](#%e5%9f%ba%e7%a1%80%e7%a8%8b%e5%ba%8f%e8%ae%be%e8%ae%a1%e7%bb%93%e6%9e%84)
-    - [基础数据类型](#%e5%9f%ba%e7%a1%80%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b)
-    - [变量](#%e5%8f%98%e9%87%8f)
-      - [Tips](#tips)
-    - [运算符](#%e8%bf%90%e7%ae%97%e7%ac%a6)
-      - [Tips](#tips-1)
-    - [字符串](#%e5%ad%97%e7%ac%a6%e4%b8%b2)
-      - [Tips](#tips-2)
-    - [输入输出](#%e8%be%93%e5%85%a5%e8%be%93%e5%87%ba)
-      - [终端的输入输出](#%e7%bb%88%e7%ab%af%e7%9a%84%e8%be%93%e5%85%a5%e8%be%93%e5%87%ba)
-      - [文件的输入输出](#%e6%96%87%e4%bb%b6%e7%9a%84%e8%be%93%e5%85%a5%e8%be%93%e5%87%ba)
-    - [大数值](#%e5%a4%a7%e6%95%b0%e5%80%bc)
-    - [数组](#%e6%95%b0%e7%bb%84)
-  - [对象与类](#%e5%af%b9%e8%b1%a1%e4%b8%8e%e7%b1%bb)
-    - [使用预定义类](#%e4%bd%bf%e7%94%a8%e9%a2%84%e5%ae%9a%e4%b9%89%e7%b1%bb)
-    - [用户自定义类](#%e7%94%a8%e6%88%b7%e8%87%aa%e5%ae%9a%e4%b9%89%e7%b1%bb)
-    - [静态域和静态方法](#%e9%9d%99%e6%80%81%e5%9f%9f%e5%92%8c%e9%9d%99%e6%80%81%e6%96%b9%e6%b3%95)
-    - [方法参数](#%e6%96%b9%e6%b3%95%e5%8f%82%e6%95%b0)
-    - [对象构造](#%e5%af%b9%e8%b1%a1%e6%9e%84%e9%80%a0)
-    - [包](#%e5%8c%85)
-    - [类路径](#%e7%b1%bb%e8%b7%af%e5%be%84)
-    - [文档注释](#%e6%96%87%e6%a1%a3%e6%b3%a8%e9%87%8a)
-    - [类设计技巧](#%e7%b1%bb%e8%ae%be%e8%ae%a1%e6%8a%80%e5%b7%a7)
-  - [继承](#%e7%bb%a7%e6%89%bf)
-    - [类,超类和子类](#%e7%b1%bb%e8%b6%85%e7%b1%bb%e5%92%8c%e5%ad%90%e7%b1%bb)
-    - [受保护的访问](#%e5%8f%97%e4%bf%9d%e6%8a%a4%e7%9a%84%e8%ae%bf%e9%97%ae)
-    - [Object及其方法](#object%e5%8f%8a%e5%85%b6%e6%96%b9%e6%b3%95)
-    - [ArrayList](#arraylist)
-    - [参数可变的方法](#%e5%8f%82%e6%95%b0%e5%8f%af%e5%8f%98%e7%9a%84%e6%96%b9%e6%b3%95)
-    - [枚举类](#%e6%9e%9a%e4%b8%be%e7%b1%bb)
-    - [反射](#%e5%8f%8d%e5%b0%84)
-      - [Class类](#class%e7%b1%bb)
-      - [Field类](#field%e7%b1%bb)
-      - [Method类](#method%e7%b1%bb)
-    - [继承的设计技巧](#%e7%bb%a7%e6%89%bf%e7%9a%84%e8%ae%be%e8%ae%a1%e6%8a%80%e5%b7%a7)
-  - [接口, lambda表达式和内部类](#%e6%8e%a5%e5%8f%a3-lambda%e8%a1%a8%e8%be%be%e5%bc%8f%e5%92%8c%e5%86%85%e9%83%a8%e7%b1%bb)
-    - [接口](#%e6%8e%a5%e5%8f%a3)
-    - [lambda表达式](#lambda%e8%a1%a8%e8%be%be%e5%bc%8f)
-    - [内部类](#%e5%86%85%e9%83%a8%e7%b1%bb)
-      - [局部内部类](#%e5%b1%80%e9%83%a8%e5%86%85%e9%83%a8%e7%b1%bb)
-      - [静态内部类](#%e9%9d%99%e6%80%81%e5%86%85%e9%83%a8%e7%b1%bb)
-    - [代理](#%e4%bb%a3%e7%90%86)
+- [基础程序设计结构](#%e5%9f%ba%e7%a1%80%e7%a8%8b%e5%ba%8f%e8%ae%be%e8%ae%a1%e7%bb%93%e6%9e%84)
+  - [基础数据类型](#%e5%9f%ba%e7%a1%80%e6%95%b0%e6%8d%ae%e7%b1%bb%e5%9e%8b)
+  - [变量](#%e5%8f%98%e9%87%8f)
+  - [运算符](#%e8%bf%90%e7%ae%97%e7%ac%a6)
+  - [字符串](#%e5%ad%97%e7%ac%a6%e4%b8%b2)
+  - [输入输出](#%e8%be%93%e5%85%a5%e8%be%93%e5%87%ba)
+  - [大数值](#%e5%a4%a7%e6%95%b0%e5%80%bc)
+  - [数组](#%e6%95%b0%e7%bb%84)
+- [对象与类](#%e5%af%b9%e8%b1%a1%e4%b8%8e%e7%b1%bb)
+  - [使用预定义类](#%e4%bd%bf%e7%94%a8%e9%a2%84%e5%ae%9a%e4%b9%89%e7%b1%bb)
+  - [用户自定义类](#%e7%94%a8%e6%88%b7%e8%87%aa%e5%ae%9a%e4%b9%89%e7%b1%bb)
+  - [静态域和静态方法](#%e9%9d%99%e6%80%81%e5%9f%9f%e5%92%8c%e9%9d%99%e6%80%81%e6%96%b9%e6%b3%95)
+  - [方法参数](#%e6%96%b9%e6%b3%95%e5%8f%82%e6%95%b0)
+  - [对象构造](#%e5%af%b9%e8%b1%a1%e6%9e%84%e9%80%a0)
+  - [包](#%e5%8c%85)
+  - [类路径](#%e7%b1%bb%e8%b7%af%e5%be%84)
+  - [文档注释](#%e6%96%87%e6%a1%a3%e6%b3%a8%e9%87%8a)
+  - [类设计技巧](#%e7%b1%bb%e8%ae%be%e8%ae%a1%e6%8a%80%e5%b7%a7)
+- [继承](#%e7%bb%a7%e6%89%bf)
+  - [类,超类和子类](#%e7%b1%bb%e8%b6%85%e7%b1%bb%e5%92%8c%e5%ad%90%e7%b1%bb)
+  - [受保护的访问](#%e5%8f%97%e4%bf%9d%e6%8a%a4%e7%9a%84%e8%ae%bf%e9%97%ae)
+  - [Object及其方法](#object%e5%8f%8a%e5%85%b6%e6%96%b9%e6%b3%95)
+  - [ArrayList](#arraylist)
+  - [参数可变的方法](#%e5%8f%82%e6%95%b0%e5%8f%af%e5%8f%98%e7%9a%84%e6%96%b9%e6%b3%95)
+  - [枚举类](#%e6%9e%9a%e4%b8%be%e7%b1%bb)
+  - [反射](#%e5%8f%8d%e5%b0%84)
+  - [继承的设计技巧](#%e7%bb%a7%e6%89%bf%e7%9a%84%e8%ae%be%e8%ae%a1%e6%8a%80%e5%b7%a7)
+- [接口, lambda表达式和内部类](#%e6%8e%a5%e5%8f%a3-lambda%e8%a1%a8%e8%be%be%e5%bc%8f%e5%92%8c%e5%86%85%e9%83%a8%e7%b1%bb)
+  - [接口](#%e6%8e%a5%e5%8f%a3)
+  - [lambda表达式](#lambda%e8%a1%a8%e8%be%be%e5%bc%8f)
+  - [内部类](#%e5%86%85%e9%83%a8%e7%b1%bb)
+  - [代理](#%e4%bb%a3%e7%90%86)
+- [泛型程序设计](#%e6%b3%9b%e5%9e%8b%e7%a8%8b%e5%ba%8f%e8%ae%be%e8%ae%a1)
+- [集合](#%e9%9b%86%e5%90%88)
+  - [Java集合框架](#java%e9%9b%86%e5%90%88%e6%a1%86%e6%9e%b6)
+  - [具体的集合类](#%e5%85%b7%e4%bd%93%e7%9a%84%e9%9b%86%e5%90%88%e7%b1%bb)
+  - [具体的映射类](#%e5%85%b7%e4%bd%93%e7%9a%84%e6%98%a0%e5%b0%84%e7%b1%bb)
+  - [视图与包装器](#%e8%a7%86%e5%9b%be%e4%b8%8e%e5%8c%85%e8%a3%85%e5%99%a8)
+  - [alg](#alg)
+  - [其他集合](#%e5%85%b6%e4%bb%96%e9%9b%86%e5%90%88)
 
 ## 基础程序设计结构
 
@@ -807,3 +804,72 @@ new Object(){}.getClass().getEnclosingClass(); //获得静态方法的类名, ge
 - 在接口中的内部类自动变成`public`和`static`的类
 
 ### 代理
+pass
+
+## 泛型程序设计
+
+## 集合
+
+### Java集合框架
+Java集合框架给出了大量数据结构和算法的实现以供调用, 并且提供了相对统一和简洁的调用方式
+- 接口与实现分离: 同一数据结构可能存在多种实现, 具有不同的性能表现, Java将抽象数据结构与具体的实现分离, 例如`Queue`接口就可以用`ArrayList`或`ArrayDeque`来实现队列的功能.
+- 接口与实现分离的好处: 能够灵活的更换底层的实现结构
+- 另外实现了一组以Abstract开头的类, 为类的实现者设计, 在实现接口时不必实现所有接口的方法.
+
+Collection接口
+- boolean add(E element); 添加元素, 确实改变了集合返回`true`否则返回`false`
+- Iterator<E> iterator(); 返回一个集合的迭代器
+- int size()
+- boolean isEmpty()
+- boolean contains(Object obj)
+- boolean containsAll(Collection<?> c)
+- boolean equals(Object other)
+- boolean addAll(Collection<? extends E> from)
+- boolean remove(Object obj)
+- boolean removeAll(Collection<?> c)
+- void clear()
+- boolean retainAll(Collection<?> c) 删除所有与other集合中不同的元素 由于调用个改变了集合则返回true
+- Object[] toArray()
+- <T> T[] toArray(T[] arrayToFill)
+
+
+Iterator接口
+- E next(); 逐个访问集合中的每个元素, 到达末尾抛出`NoSuchElementException`
+- boolean hasNext(); 可以用`hasNext`和`next`配合, 遍历所有元素, 但是更好的方法是用`foreach`语法 
+- void remove(); 删除上次访问的对象 必须紧跟在next后执行, 若上次访问后集合发生改变, 则调用返回`IllegalStateException`
+- default void forEachRemaining(Consumer<? super E> action);
+
+`foreach`语法能够与实现了`Iterable`接口的类工作, `Iterable`接口只有一个抽象方法`Iterator`, 即`Collection`中的所有数据类型都扩展了该接口
+
+另外, Java8之后, 可以使用`forEachRemaining`方法, 方法引入一个lambda表达式, 迭代处理每个元素
+
+`iterator.forEachRemaining(element-> do somthing with element);`
+
+> 与C++的区别: Java迭代器认为是位于两个元素之间的,当调用next时, 迭代器就越过下一个元素, 并且返回刚才越过的元素的引用. C++的迭代器则是根据数组索引建模的, 即指向某个位置的元素, 而非两个元素之间
+
+`iterator`接口的`remove`方法
+- 该方法删除的是上一个`next`返回的元素, 这与删除前先查看的思想是一致的, 但是删除某个位置的元素前, 也需要先越过该元素
+- `remove`方法与`next`方法紧密依赖, 调用`remove`前没有调用`next`是不合法的 **注意删除连续的两个元素时的操作**
+
+![]()
+
+- 向集合插入元素可以用`add`, 但是对于Map接口, 需要用`V put(K key, V value)`和`V get(K key)`方法
+- List类是有序集合, 支持随机访问, 定义了以下用于随机访问的方法
+  - void add(int index, E element)
+  - void remove(int index)
+  - E get(int index)
+  - E set(int index, E element)
+- ListIterator是Iterator的子接口, 定义了`void add(Element)`方法在迭代器前面添加一个元素, 也可以通过`previous`和`hasPrevious`方法向前迭代
+- 为了避免对链表完成随机访问的操作, 定义了`randomAccess`接口, 接口没有定义任何方法, 但可以用`instanceOf`检查是否可以高效随机访问
+- LinkedList底层是链表, ArrayList底层是动态数组
+
+### 具体的集合类
+
+### 具体的映射类
+
+
+### 视图与包装器
+
+### alg
+
+### 其他集合
