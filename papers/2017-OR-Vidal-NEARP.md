@@ -406,3 +406,41 @@ double SeqData::evaluationLB(SeqData * seq1, SeqData * seq2, Vehicle * vehicle)
 		+ max(totDistance - vehicle->maxRouteTime,0.0)*params->penalityLength ;
 }
 ```
+
+### 子问题的动态规划部分
+
+```cpp
+void SeqData::concatOneAfter(SeqData * seq, int Vcour, Individual * myIndiv, int day)
+{
+	Client * lastCli = &params->cli[seq->lastNode] ;
+	Client * vCourCli = &params->cli[Vcour] ;
+
+	vector<double> & distanceNodescli0 = params->ar_distanceNodes[lastCli->ar_nodesExtr0] ;
+	vector<double> & distanceNodescli1 = params->ar_distanceNodes[lastCli->ar_nodesExtr1] ;
+
+	// All pairs shortest path pre-processing
+	bestCost01 =  min(seq->bestCost00 + distanceNodescli0[vCourCli->ar_nodesExtr0],
+		seq->bestCost01 + distanceNodescli1[vCourCli->ar_nodesExtr0])
+		+ params->cli[Vcour].ar_serviceCost01;
+
+	bestCost11 =  min(seq->bestCost10 + distanceNodescli0[vCourCli->ar_nodesExtr0],
+		seq->bestCost11 + distanceNodescli1[vCourCli->ar_nodesExtr0])
+		+ params->cli[Vcour].ar_serviceCost01;
+
+	bestCost00 =  min(seq->bestCost00 + distanceNodescli0[vCourCli->ar_nodesExtr1],
+		seq->bestCost01 + distanceNodescli1[vCourCli->ar_nodesExtr1])
+		+ params->cli[Vcour].ar_serviceCost10;
+
+	bestCost10 =  min(seq->bestCost10 + distanceNodescli0[vCourCli->ar_nodesExtr1],
+		seq->bestCost11 + distanceNodescli1[vCourCli->ar_nodesExtr1])
+		+ params->cli[Vcour].ar_serviceCost10;
+
+	// This part of pre-processing is useful to compute the lower bounds
+	distance = min(min(bestCost01,bestCost11),min(bestCost00,bestCost10));
+
+	// Load pre-processing
+	load = seq->load + params->cli[Vcour].demandPatDay[myIndiv->chromP[Vcour].pat][day];
+	firstNode = seq->firstNode ;
+	lastNode = Vcour ;
+}
+```
