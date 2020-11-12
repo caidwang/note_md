@@ -111,8 +111,59 @@ bool Bellman-Ford(G,w,s)        //图G ，边集 函数 w ，s为源点
 
 TDCARP组合了四类决策：分配服务到车辆，一条路径中的服务顺序，服务的模式选择，服务之间的路径选择
 
+在本文中，解的表示采用和Vidal2017中一样的，一个不包含模式信息的服务的序列，用dp的方法完成模式选择，如下图中的R-Indirect
+
+![](../pictures/papers/vidal-arxiv-2020/3.png)
+
+在时间相关的通行时间的问题中，解的评价需要到达时间和完成服务时间在整个辅助图中传播。在本文中，这种传播通过Bellman算法，同时使用到的预处理中计算的最短路径$\Psi$的信息，来评估服务之间的通行时间和服务的服务时间。
+对于R-Indirect中的一条路径$\sigma=(\sigma(1),\dots,\sigma(|\sigma|))$,其中$\sigma(1)=0,\sigma(|\sigma|) = 0$表示仓点的起点和终点，每个服务$\sigma(i)$的每种模式$l \in M_{\sigma(i)}$的完成时间$T_{\sigma(i)}^{EXACT}[l]$可以按照下式计算：
+$$
+T_{\sigma(i)}^{EXACT}[l]=
+\begin{cases}
+  0, & \text{if i = 1}\\
+  min_{k \in M_{\sigma(i-1)}} \{\hat{\Phi}^l_{\sigma(i)} (\Psi_{\sigma(i-1)\sigma(i)}^{kl}(T_{\sigma(i-1)}^{EXACT}[k]))\}, & \text{otherwise} 
+\end{cases}
+$$
+
+整条路径的最终时长为$T_{\sigma(|\sigma|)}^{EXACT}[1]$
+
+在上式中，
+- $\Psi_{ij}^{kl}(t)$表示按照k模式服务完i服务从终点出发按照l模式服务j的情况下的到达时间
+- $\hat{\Phi}^l_{i}(t)$表示从t时间开始以l模式服务i服务的完成时间
+
+令$C_{\Psi}$和$C_{\hat{\Phi}}$表示函数$\Psi$和函数$\hat{\Phi}$的查询复杂度，对于R-Indirect方法，复杂度是$4kC_{\Psi}+4kC_{\hat{\Phi}}$
 
 
+**邻域搜索的加速**
+
+- 采用首次提升策略，随机的在邻域进行搜索，在第一次提升时采纳
+- 该问题的LS中的两点性质：
+  - 所有的邻域操作都是将最多两个路径分成固定数量的子串并重新连接。对这些子串的预处理信息能够减少路径连接的评价的复杂度
+  - 令$C_{LB}(\sigma)$表示一个路径$\sigma$的下界， 令$\Pi$表示一个将一对路径$(\sigma_1,\sigma_2)$转换成$(\sigma_1', \sigma_2')$的邻域动作。如果$C_{LB}(\sigma_1') +C_{LB}(\sigma_2') - C(\sigma_1) - C(\sigma_2) \geq 0$, 则$\Pi$认为是没有提升的应该被过滤掉
+
+下界的估算
+
+$T^{LB}(\sigma)[k,l]$表示一个连续的访问$\sigma$,在第一个服务以k模式服务，最后一个服务以l模式服务，按照各种服务模式组合的下界。
+对于含有一个服务i的序列$\sigma$，有：
+$$
+T^{LB}(\sigma)[k,l]=
+\begin{cases}
+  min_{t \in [0,D]} \{\hat{\Phi}^k_i(t) - t\} & \text{if k = l} \\
+  \infin & \text{ohterwise}
+\end{cases}
+$$
+
+其中$min_{t \in [0,D]} \{\hat{\Phi}^k_i(t) - t\}$表示以k模式服务i服务的最小时间。对于$\sigma_1 \oplus\sigma_2$表示的两个序列的连接，其下界可以按照下式估计：
+$$
+T^{LB}(\sigma_1\oplus \sigma_2)[k,l] = min _{x,y}\big \{ T^{LB}(\sigma_1)[k,x] + min_{t \in [0,D]} \{\Psi_{\sigma(|\sigma_1|)\sigma_2(1)}(t) - t\} + T^{LB}(\sigma_2)[y,l] \big \}
+$$
+
+最后，文章提出了一种更加强化的下界，在知道第一段子串的确切到达时间时，新的下界可以表示为
+$$
+T^{LB+}(\sigma_1\oplus\dots\oplus\sigma_S) = min_{x,y} \big \{ \Psi_{\sigma_1(|\sigma_1|)\sigma_2(1)} (T_{\sigma_1(|\sigma_1|)}^{EXACT}[x]) + T^{LB}(\sigma_2\oplus\dots\oplus\sigma_S)[y,1] \big \}
+$$
+
+文章的数据给出这样的下界能够过滤91%的邻域操作 
 
 ## 4. Evaluation
 
