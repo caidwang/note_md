@@ -33,12 +33,15 @@ Arc Routing with Time-Dependent Travel Times and Paths
 
 速度模型总体是符合IGP模型。给定一个规划平面\[0,H\], 每条边或弧$(i,j) \in A_R \cap E_R$具有一个距离$d_{ij}$, 和一个分段的常数速度函数$v_{ij}:[0,D] \rightarrow \mathbb{R^+}$, 函数具有$h_{ij}$个分段，表示该段关于时间的行驶速度（单位时间的行驶距离）。车辆在该边上行驶的过程中，速度按照该函数随时间变化。在该问题中，边允许具有不对称性，不同的边和弧的方向可以具有不同的速度函数和不同时间点的不连续点。
 
-基于上述的定义，车辆在$t_i$时刻从i出发到达j的通行时间$\Phi_{ij}(t_i)$和服务时间$\hat{\Phi}_{ij}(t_i)$可以按照下式计算：
+基于上述的定义，车辆在$t_i$时刻从i出发到达j的通行时间$\Phi_{ij}(t_i)$和服务时间$\hat{\Phi}_{ij}(t_i)$ 可以按照下式计算：
+
 $$
 \Phi_{ij}(t_i) = \{ x \mid \int_{t_i}^{x}v_{ij}(t) dt=d_{ij}\} \qquad \text{when travelling on (i,j)}\\
 \hat{\Phi_{ij}}(t_i) = \{x \mid \int_{t_i}^{x}\hat{v}_{ij}(t) dt=d_{ij}\} \qquad \text{when servicing (i,j)}
 $$
+
 对于$t_j$时刻到达j节点的出发时间，可以按照下式计算：
+
 $$
 \Phi_{ij}^{-1}(t_i) = \{ x \mid \int_{x}^{t_j}v_{ij}(t) dt=d_{ij}\} \qquad \text{when travelling on (i,j)}\\
 \hat{\Phi}_{ij}^{-1}(t_i) = \{x \mid \int_{x}^{t_j}\hat{v}_{ij}(t) dt=d_{ij}\} \qquad \text{when servicing (i,j)}
