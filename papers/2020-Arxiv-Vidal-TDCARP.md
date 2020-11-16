@@ -3,10 +3,7 @@
 Arc Routing with Time-Dependent Travel Times and Paths
 
 
-
 ## 0. Summary
-
-
 
 
 ## 1. Research Objective
@@ -187,13 +184,17 @@ $$
 
 ## 4. Evaluation
 
-作者如何评估自己的方法，实验的setup是什么样的，有没有问题或者可以借鉴的地方。
+- 数据集来源：BMCV，EGL算例集中的20个算例，随机生成时间相关的速度信息
+- 将每个边的速度函数设为7个分段，断点从$\{0.05D,0.1D,0.15D,\dots,0.95D\}$中随机选择6个，为每个函数片段$k \in \{1,\dots,7\}$按照$U(a_k,b_k)$的分布随机设置速度，其中$a_k,b_k$参数按照下表分成3组。
+- 服务时的速度是通行时的70%。
+- 其他设置和数据集保持一致
+![](../pictures/papers/vidal-arxiv-2020/4.png)
+
 
 
 
 ## 5. Conclusion
 
-作者给了哪些结论，哪些是strong conclusions, 哪些又是weak的conclusions?
 
 
 
