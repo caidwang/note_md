@@ -444,3 +444,21 @@ void SeqData::concatOneAfter(SeqData * seq, int Vcour, Individual * myIndiv, int
 	lastNode = Vcour ;
 }
 ```
+
+如何从split结果转为LS需要结构：
+void Individual::updateLS()
+LS中的对应结构
+```cpp
+// 双向循环链表
+	// Linked list of the customer (used to store the solution)
+	// there is a pointer for the successor and the predecessor, as well as for the route and pre-processed data structures
+	Node ** clients ; // Elements representing the customers [nbDays][nbClient+nbDepots+1]
+	Node ** depots ; // Elements representing the depots [nbDays][nbVeh]
+	Node ** depotsFin ; // Sentinels at the end of the routes [nbDays][nbVeh]
+	Route ** routes ; // Elements representing the routes [nbDays][nbVeh]
+```
+![](../pictures/papers/2017NEARP/updateLS.png)
+
+
+代码框架的整体流程
+![](../pictures/papers/2017NEARP/流程图.png)
