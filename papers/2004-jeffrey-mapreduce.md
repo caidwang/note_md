@@ -1,7 +1,7 @@
 <!--
  * @Author: sunchao wang
  * @Date: 2021-01-16 20:33:02
- * @LastEditTime: 2021-01-20 14:48:07
+ * @LastEditTime: 2021-01-22 21:06:46
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /note_md/papers/2004-jeffrey-mapreduce.md
@@ -55,6 +55,17 @@ reduce(K2, list(V2)) -> list(V2)
 7. 当所有的map和reduce任务完成时，master唤醒用户程序，这个部分结束
 
 ### master 数据结构
+对于每个map和reduce任务，master需要保存一些数据结构进行记录，包括状态（空闲，处理中，处理完成），对于非空闲的任务，需要记录处理它的worker机器编号。同时，master是中间结果路径的从map任务的机器传递到reduce任务的机器的通道，对于每个完成的map任务，master需要记录中间结果的存储位置以及R个中间文件的大小。当map任务完成式，路径信息和大小信息都会被更新。这些信息被增量推送到正在进行reduce任务的worker上。
+
+### 容错
+
+**worker 失效**
+
+master会定期ping worker，当一定时间worker没有响应时，master判断该worker已经失效。
+
+所有已经被该worker完成的map任务会被重新置为空闲状态，并且能够重新调度给其他worker。所有正在被该worker处理的map/reduce任务也会被置为空闲状态。
+
+> 由于map任务处理后的中间结果被存储在worker的本地存储当中，因此如果该worker失效，其上完成的map任务的中间结果也无法访问。当前worker上完成的reduce任务不需要被重新执行因为这类结果会被存储在全局文件系统中。
 
 
 ## 4. Evaluation
