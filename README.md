@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-10-15 16:25:49
+ * @LastEditTime: 2021-05-05 16:02:04
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /note_md/README.md
+-->
 # README
 课程备考笔记, 面试准备笔记, 论文阅读笔记 
 
@@ -36,6 +44,7 @@
 - [2009-WWW-click Chain Model](papers/2009WWW-click-chain-model.md)
 - [2019-STOC-A-1.5-Approx-for-path-TSP](papers/2019STOC-A-1.5-Approx-for-path-TSP.md)
 - [2020-ICLR-Neural-Execution-of-graph-algorithms](papers/2020ICLR-Neural-Execution-of-graph-algorithms.md)
+- [2004-jeffrey-mapreduce](papers/2004-jeffrey-mapreduce.md)
 
 ## 机器学习笔记
 - [Deep Learning Notes](https://github.com/caidwang/NN-and-DL-Notebook)
