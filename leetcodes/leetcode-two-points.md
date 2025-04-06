@@ -33,6 +33,35 @@ while (left < right) {
     exch(array, left, right);
 }
 ```
+上述代码中内循环的break条件，可以通过安放哨兵的方式消除。在数组左侧放置一个不满足右指针valid条件的值，在数组的右侧放置一个不满足左指针valid条件的值，保证循环能在边界停下。具体示例可以参考完整的快排切分方法：
+```java
+int partition(int[] list, int start, int end) {
+    // 三采样
+    int mid = start + (end - start) / 2;
+    if (less(list, mid, start)) {
+        swap(list, mid, start);
+    }
+    if (less(list, end, mid)) {
+        swap(list, mid, end); // 放置了右侧哨兵位 这个值满足切分右侧的条件 因此不需要在最后还原位置
+    }
+    // 放置了左侧哨兵位
+    swap(list, mid, start);
+
+    int left = start;
+    int right = end;
+    while(true) {
+        while(less(list, ++left, start)) ;
+        while(less(list, start, --right)) ;
+
+        if (left >= right) {
+            break;
+        }
+        swap(list, left, right);
+    }
+    swap(list, start, right); // 还原左侧哨兵的正确位置
+    return right;
+} 
+```
 
 双指针最常见的两种模式是快慢指针和首尾向中间移动.
 
